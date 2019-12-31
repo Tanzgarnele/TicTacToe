@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeUi", "TicTacToeUi\TicTacToeUi.csproj", "{94726B58-0B4C-4BA0-A805-0ECE3BC7EBD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeMatch", "TicTacToeMatch\TicTacToeMatch.csproj", "{16A36095-7BF2-4893-9B89-EC4042CE1505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerDes", "Serializer\SerDes.csproj", "{52E49F0F-9B2C-4C1D-9712-6A5A3F959C91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseManager", "DataBaseManager\DataBaseManager.csproj", "{9872A01D-C394-46BF-991D-E2CC54759F45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94726B58-0B4C-4BA0-A805-0ECE3BC7EBD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94726B58-0B4C-4BA0-A805-0ECE3BC7EBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94726B58-0B4C-4BA0-A805-0ECE3BC7EBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94726B58-0B4C-4BA0-A805-0ECE3BC7EBD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16A36095-7BF2-4893-9B89-EC4042CE1505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16A36095-7BF2-4893-9B89-EC4042CE1505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16A36095-7BF2-4893-9B89-EC4042CE1505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16A36095-7BF2-4893-9B89-EC4042CE1505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E49F0F-9B2C-4C1D-9712-6A5A3F959C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E49F0F-9B2C-4C1D-9712-6A5A3F959C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E49F0F-9B2C-4C1D-9712-6A5A3F959C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E49F0F-9B2C-4C1D-9712-6A5A3F959C91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9872A01D-C394-46BF-991D-E2CC54759F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9872A01D-C394-46BF-991D-E2CC54759F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9872A01D-C394-46BF-991D-E2CC54759F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9872A01D-C394-46BF-991D-E2CC54759F45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C25EB3FC-885D-4303-B71B-6C8AEB2F822B}
+	EndGlobalSection
+EndGlobal
