@@ -9,9 +9,6 @@ namespace TicTacToeUi
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         private static void Main()
         {
@@ -19,7 +16,7 @@ namespace TicTacToeUi
             IAiMove aiMoves = (IAiMove)GlobalFactory.Create(typeof(IAiMove));
             ISerializeData serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
             IDeSerializeData deserialize = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
-            IIniParseData iniParser= (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
+            IIniParseData iniParser = (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

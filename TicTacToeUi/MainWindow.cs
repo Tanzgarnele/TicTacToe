@@ -30,9 +30,9 @@ namespace TicTacToeUi
         private IIniParseData iniParseData;
         private SavedGameState savedGameState;
         private Mapper mapper = new Mapper();
-        private Int32 CountX;
-        private Int32 CountO;
-        private Int32 CountDraw;
+        private Int32 countX;
+        private Int32 countO;
+        private Int32 countDraw;
 
         public MainWindow(IMatrixAlgorithm matrixAlgorithm, IAiMove aiMove, ISerializeData serialize, IDeSerializeData deserializeData, IIniParseData iniParseData)
         {
@@ -70,10 +70,10 @@ namespace TicTacToeUi
             }
 
             this.aiMove = (IAiMove)GlobalFactory.Create(typeof(IAiMove));
-            this.Setup(this.boardSizeTrackBar.Value);
+            this.SetupBoard(this.boardSizeTrackBar.Value);
         }
 
-        public void Setup(Int32 dimension)
+        public void SetupBoard(Int32 dimension)
         {
             this.matrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
             this.matrixAlgorithm.EndGame += this.TicTacToeMatrix_EndGame;
@@ -121,29 +121,28 @@ namespace TicTacToeUi
 
         public void ShowStats()
         {
-            this.CountDraw = 0;
-            this.CountO = 0;
-            this.CountX = 0;
+            this.countDraw = 0;
+            this.countO = 0;
+            this.countX = 0;
             foreach (History item in this.settings.HistoryList)
             {
                 if (item.Winner == PlayerType.X.ToString())
                 {
-                    this.CountX++;
+                    this.countX++;
                 }
                 else if (item.Winner == PlayerType.O.ToString())
                 {
-                    this.CountO++;
+                    this.countO++;
                 }
                 else
                 {
-                    this.CountDraw++;
+                    this.countDraw++;
                 }
             }
-            this.txtBoxX.Text = this.CountX.ToString();
-            this.txtBoxO.Text = this.CountO.ToString();
-            this.txtBoxDraw.Text = this.CountDraw.ToString();
+            this.txtBoxX.Text = this.countX.ToString();
+            this.txtBoxO.Text = this.countO.ToString();
+            this.txtBoxDraw.Text = this.countDraw.ToString();
         }
-
 
         public Difficulty ChooseDifficulty()
         {
@@ -200,15 +199,15 @@ namespace TicTacToeUi
                     return;
 
                 case Difficulty.Easy:
-                    this.AiEasyMode();
+                    this.PlayAiEasyMode();
                     break;
 
                 case Difficulty.Hard:
-                    this.AiHardMode();
+                    this.PlayAiHardMode();
                     break;
 
                 case Difficulty.Middle:
-                    this.AiMiddleMode();
+                    this.PlayAiMiddleMode();
                     break;
             }
         }
@@ -236,7 +235,7 @@ namespace TicTacToeUi
             }
         }
 
-        private void AiMiddleMode()
+        private void PlayAiMiddleMode()
         {
             if (this.matrixAlgorithm.CurrentTurn != PlayerType.X)
             {
@@ -262,7 +261,7 @@ namespace TicTacToeUi
             }
         }
 
-        private void AiHardMode()
+        private void PlayAiHardMode()
         {
             PointIndex aiMediumPoint = this.aiMove.GetAiMediumPointIndex(this.matrixAlgorithm);
             foreach (Button button in this.gamePanel.ButtonList)
@@ -285,7 +284,7 @@ namespace TicTacToeUi
             }
         }
 
-        public void AiEasyMode()
+        public void PlayAiEasyMode()
         {
             if (this.gamePanel.ButtonList.Count > 0)
             {
@@ -423,7 +422,7 @@ namespace TicTacToeUi
 
         private void BtnStart_Click(Object sender, EventArgs e)
         {
-            this.Setup(this.boardSizeTrackBar.Value);
+            this.SetupBoard(this.boardSizeTrackBar.Value);
         }
 
         #endregion Buttons
