@@ -13,32 +13,32 @@ namespace DataBaseManager.Internal
 
         private static readonly String directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\settings\\autosave.db";
 
-        public void DataBaseFileWriter(HistoryData historyData)
+        public void WriteDatabaseFile(HistoryData historyData)
         {
             if (!File.Exists(directory))
             {
-                this.dataBaseConnection.DataBaseCreator();
+                this.dataBaseConnection.CreateDataBase();
             }
-            this.dataBaseConnection.DatabaseOpenConnection();
+            this.dataBaseConnection.OpenDataBaseConnection();
             Stopwatch stopWatch = new Stopwatch();
 
             stopWatch.Start();
 
             String qry = "Delete From history Where Round > 0";
-            this.dataBaseConnection.DataModifier(qry);
+            this.dataBaseConnection.ModifyData(qry);
 
             String query = "begin";
-            this.dataBaseConnection.DataModifier(query);
+            this.dataBaseConnection.ModifyData(query);
 
             for (Int32 i = 0; i < historyData.HistoryList.Count; i++)
             {
                 query = $"Insert into history(Round, Winner) Values ({historyData.HistoryList[i].RoundCount}, '{historyData.HistoryList[i].Winner}')";
-                this.dataBaseConnection.DataModifier(query);
+                this.dataBaseConnection.ModifyData(query);
             }
             query = "end";
-            this.dataBaseConnection.DataModifier(query);
+            this.dataBaseConnection.ModifyData(query);
             Console.WriteLine("{0} seconds with one transaction", stopWatch.Elapsed.TotalSeconds);
-            this.dataBaseConnection.DatabaseCloseConnection();
+            this.dataBaseConnection.CloseDataBaseConnection();
         }
     }
 }

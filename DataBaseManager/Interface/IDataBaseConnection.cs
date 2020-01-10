@@ -5,12 +5,12 @@ namespace DataBaseManager.Interface
 {
     public interface IDataBaseConnection
     {
-        void DatabaseOpenConnection();
+        void OpenDataBaseConnection();
 
-        void DatabaseCloseConnection();
+        void CloseDataBaseConnection();
 
         DataTable GetData(String query);
 
-        void DataModifier(String query);
+        void ModifyData(String query);
     }
 }

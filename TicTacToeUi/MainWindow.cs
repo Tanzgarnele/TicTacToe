@@ -351,7 +351,7 @@ namespace TicTacToeUi
 
             if (this.settings.HistoryList.Count >= 1)
             {
-                dataBaseWriter.DataBaseFileWriter(historyData);
+                dataBaseWriter.WriteDatabaseFile(historyData);
             }
 
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -583,7 +583,7 @@ namespace TicTacToeUi
             {
                 HistoryList = this.settings.HistoryList,
             };
-            dataBaseWrite.DataBaseFileWriter(historyData);
+            dataBaseWrite.WriteDatabaseFile(historyData);
             this.serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
             this.serialize.SerializeJson(Application.StartupPath + "/settings/autosave.json", data);
             this.serialize.SerializeXml(Application.StartupPath + "/settings/autosave.xml", data);
