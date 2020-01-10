@@ -6,6 +6,5 @@ namespace DataBaseManager.Entities
     public class HistoryData
     {
         public List<History> HistoryList { get; set; }
-
     }
 }

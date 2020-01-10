@@ -18,7 +18,7 @@ namespace DataBaseManager.Internal
         {
         }
 
-        public void CreataDataBase()
+        public void DataBaseCreator()
         {
             SQLiteConnection.CreateFile(directory);
 
@@ -44,7 +44,7 @@ namespace DataBaseManager.Internal
             return _Connection;
         }
 
-        public void ConOpen()
+        public void DatabaseOpenConnection()
         {
             try
             {
@@ -58,7 +58,7 @@ namespace DataBaseManager.Internal
             }
         }
 
-        public void ConClose()
+        public void DatabaseCloseConnection()
         {
             this.connection.Close();
         }
@@ -77,7 +77,7 @@ namespace DataBaseManager.Internal
             return dt;
         }
 
-        public void ModifyData(String query)
+        public void DataModifier(String query)
         {
             SQLiteCommand cmd = new SQLiteCommand
             {

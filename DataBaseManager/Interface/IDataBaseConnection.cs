@@ -1,17 +1,16 @@
-﻿using DataBaseManager.Internal;
-using System;
+﻿using System;
 using System.Data;
 
 namespace DataBaseManager.Interface
 {
     public interface IDataBaseConnection
     {
-        void ConOpen();
+        void DatabaseOpenConnection();
 
-        void ConClose();
+        void DatabaseCloseConnection();
 
         DataTable GetData(String query);
 
-        void ModifyData(String query);
+        void DataModifier(String query);
     }
 }
