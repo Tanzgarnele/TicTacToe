@@ -374,7 +374,7 @@ namespace TicTacToeUi
                 }
                 else if (saveFileDialog.FileName.Contains(".ini"))
                 {
-                    this.iniParseData.IniWriter(saveFileDialog.FileName, data);
+                    this.iniParseData.WriteToIni(saveFileDialog.FileName, data);
                 }
                 else
                 {

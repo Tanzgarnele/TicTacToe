@@ -5,7 +5,7 @@ namespace Serializer.Interface
 {
     public interface IIniParseData
     {
-        void IniWriter(String fileName, Data data);
+        void WriteToIni(String fileName, Data data);
         Data ReadIni(String fileName);
 
     }

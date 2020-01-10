@@ -16,7 +16,7 @@ namespace Serializer.Internal
     {
         private IMatrixAlgorithm MatrixAlgorithm { get; set; }
 
-        public void IniWriter(String fileName, Data data)
+        public void WriteToIni(String fileName, Data data)
         {
             FileIniDataParser parser = new FileIniDataParser();
             IniData iniData = new IniData();
