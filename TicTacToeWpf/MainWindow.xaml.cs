@@ -8,18 +8,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
 using TicTacToeMatch.Definitions;
 using TicTacToeMatch.Entities;
 using TicTacToeMatch.Events;
 using TicTacToeMatch.Factory;
 using TicTacToeMatch.Interfaces;
-using TicTacToeUi.Interfaces;
-using TicTacToeUi.Internal;
+using TicTacToeWPF.Interfaces;
+using TicTacToeWPF.Internal;
+using Button = System.Windows.Controls.Button;
 
-namespace TicTacToeUi
+namespace TicTacToeWPF
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow : Window
     {
         private IMatrixAlgorithm matrixAlgorithm;
         private readonly ISettings settings;
@@ -30,36 +32,23 @@ namespace TicTacToeUi
         private IIniParseData iniParseData;
         private SavedGameState savedGameState;
         private Mapper mapper = new Mapper();
-        private Int32 CountX;
-        private Int32 CountO;
-        private Int32 CountDraw;
+        private Int32 countX;
+        private Int32 countO;
+        private Int32 countDraw;
+        private Grid grid;
 
-        public MainWindow(IMatrixAlgorithm matrixAlgorithm, IAiMove aiMove, ISerializeData serialize, IDeSerializeData deserializeData, IIniParseData iniParseData)
+        public MainWindow()
         {
-            this.matrixAlgorithm = matrixAlgorithm ?? throw new ArgumentNullException(nameof(matrixAlgorithm));
-            this.aiMove = aiMove ?? throw new ArgumentNullException(nameof(aiMove));
-            this.serialize = serialize ?? throw new ArgumentNullException(nameof(serialize));
-            this.deserializeData = deserializeData ?? throw new ArgumentNullException(nameof(deserializeData));
-            this.iniParseData = iniParseData ?? throw new ArgumentNullException(nameof(iniParseData));
+            this.InitializeComponent();
             this.settings = new Settings
             {
                 HistoryList = new List<History>()
             };
             this.gamePanel = new GamePanel();
-            this.InitializeComponent();
             this.txtBoxTrackBar.Text = this.boardSizeTrackBar.Value.ToString();
+            this.aiMove = (IAiMove)GlobalFactory.Create(typeof(IAiMove));
+            this.grid = new Grid() { Name = "Grid" };
         }
-
-        private void BtnNew_Click(Object sender, EventArgs e)
-        {
-            this.gamePanel.ButtonList.Clear();
-            this.settings.HistoryList.Clear();
-            this.dataGrid.DataSource = null;
-
-            this.RestartGame();
-        }
-
-        #region Game Setup / Restart
 
         private void RestartGame()
         {
@@ -70,11 +59,12 @@ namespace TicTacToeUi
             }
 
             this.aiMove = (IAiMove)GlobalFactory.Create(typeof(IAiMove));
-            this.Setup(this.boardSizeTrackBar.Value);
+            this.Setup(Convert.ToInt32(this.boardSizeTrackBar.Value));
         }
 
         public void Setup(Int32 dimension)
         {
+            this.grid = new Grid() { Name = "Grid" };
             this.matrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
             this.matrixAlgorithm.EndGame += this.TicTacToeMatrix_EndGame;
             this.gamePanel.Difficulty = this.ChooseDifficulty();
@@ -84,15 +74,14 @@ namespace TicTacToeUi
                 throw new ArgumentOutOfRangeException(nameof(dimension));
             }
 
-            this.mainTableLayloutPanel.Controls.Clear();
-
-            this.mainTableLayloutPanel.RowCount = dimension;
-            this.mainTableLayloutPanel.ColumnCount = dimension;
+            this.StackPanel.Children.Clear();
 
             this.gamePanel.ButtonList = new List<Button>();
 
             for (Int32 row = 0; row < dimension; row++)
             {
+                this.grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(65) });
+                this.grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(65) });
                 for (Int32 col = 0; col < dimension; col++)
                 {
                     Button current = new Button
@@ -101,14 +90,15 @@ namespace TicTacToeUi
                         Width = 62,
                         Tag = new PointIndex(col, row)
                     };
+                    Grid.SetRow(current, row);
+                    Grid.SetColumn(current, col);
+                    this.grid.Children.Add(current);
                     this.gamePanel.ButtonList.Add(current);
 
                     current.Click += this.PlayerButtonOnClick;
-
-                    this.mainTableLayloutPanel.Controls.Add(current, col, row);
                 }
             }
-
+            this.StackPanel.Children.Add(this.grid);
             this.matrixAlgorithm.Initialize(dimension);
 
             if (this.gamePanel.Difficulty == Difficulty.Middle)
@@ -121,53 +111,48 @@ namespace TicTacToeUi
 
         public void ShowStats()
         {
-            this.CountDraw = 0;
-            this.CountO = 0;
-            this.CountX = 0;
+            this.countDraw = 0;
+            this.countO = 0;
+            this.countX = 0;
             foreach (History item in this.settings.HistoryList)
             {
                 if (item.Winner == PlayerType.X.ToString())
                 {
-                    this.CountX++;
+                    this.countX++;
                 }
                 else if (item.Winner == PlayerType.O.ToString())
                 {
-                    this.CountO++;
+                    this.countO++;
                 }
                 else
                 {
-                    this.CountDraw++;
+                    this.countDraw++;
                 }
             }
-            this.txtBoxX.Text = this.CountX.ToString();
-            this.txtBoxO.Text = this.CountO.ToString();
-            this.txtBoxDraw.Text = this.CountDraw.ToString();
+            this.txtBoxX.Text = this.countX.ToString();
+            this.txtBoxO.Text = this.countO.ToString();
+            this.txtBoxDraw.Text = this.countDraw.ToString();
         }
-
 
         public Difficulty ChooseDifficulty()
         {
-            if (this.radioBtnEasy.Checked)
+            if (this.radioBtnEasy.IsChecked == true)
             {
                 return Difficulty.Easy;
             }
 
-            if (this.radioBtnMedium.Checked)
+            if (this.radioBtnMedium.IsChecked == true)
             {
                 return Difficulty.Middle;
             }
 
-            if (this.radioBtnHard.Checked)
+            if (this.radioBtnHard.IsChecked == true)
             {
                 return Difficulty.Hard;
             }
 
             return Difficulty.FaceToFace;
         }
-
-        #endregion Game Setup / Restart
-
-        #region GameBoard
 
         private void PlayerButtonOnClick(Object sender, EventArgs e)
         {
@@ -176,15 +161,10 @@ namespace TicTacToeUi
                 return;
             }
 
-            if (!String.IsNullOrWhiteSpace(btn.Text))
-            {
-                return;
-            }
-
             PointIndex point = (PointIndex)btn.Tag;
 
             this.matrixAlgorithm.Board[point.X, point.Y] = this.matrixAlgorithm.CurrentTurn;
-            btn.Text = this.matrixAlgorithm.CurrentTurn.ToString();
+            btn.Content = this.matrixAlgorithm.CurrentTurn.ToString();
             this.gamePanel.ButtonList.Remove(btn);
             this.matrixAlgorithm.CheckWinner(point, this.matrixAlgorithm.CurrentTurn);
 
@@ -213,8 +193,6 @@ namespace TicTacToeUi
             }
         }
 
-        #endregion GameBoard
-
         #region AiDifficulty
 
         private void ClickAiMiddle()
@@ -230,7 +208,7 @@ namespace TicTacToeUi
             {
                 if (btn.Tag.Equals(point))
                 {
-                    btn.PerformClick();
+                    btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     return;
                 }
             }
@@ -250,7 +228,7 @@ namespace TicTacToeUi
                 if (aiHardPoint.Equals(button.Tag))
                 {
                     this.matrixAlgorithm.Board[aiHardPoint.X, aiHardPoint.Y] = this.matrixAlgorithm.CurrentTurn;
-                    button.Text = this.matrixAlgorithm.CurrentTurn.ToString();
+                    button.Content = this.matrixAlgorithm.CurrentTurn.ToString();
                     this.matrixAlgorithm.CheckWinner(aiHardPoint, this.matrixAlgorithm.CurrentTurn);
 
                     if (this.matrixAlgorithm.WinnerState)
@@ -272,7 +250,7 @@ namespace TicTacToeUi
                     continue;
                 }
 
-                button.Text = this.matrixAlgorithm.CurrentTurn.ToString();
+                button.Content = this.matrixAlgorithm.CurrentTurn.ToString();
                 this.matrixAlgorithm.Board[aiMediumPoint.X, aiMediumPoint.Y] = this.matrixAlgorithm.CurrentTurn;
                 this.matrixAlgorithm.CheckWinner(aiMediumPoint, this.matrixAlgorithm.CurrentTurn);
 
@@ -289,10 +267,11 @@ namespace TicTacToeUi
         {
             if (this.gamePanel.ButtonList.Count > 0)
             {
-                Int32 index = this.aiMove.AiRandom(this.gamePanel.ButtonList);
+                Random random = new Random();
+                Int32 index = random.Next(this.gamePanel.ButtonList.Count);
                 PointIndex point = (PointIndex)this.gamePanel.ButtonList[index].Tag;
                 this.matrixAlgorithm.Board[point.X, point.Y] = this.matrixAlgorithm.CurrentTurn;
-                this.gamePanel.ButtonList[index].Text = this.matrixAlgorithm.CurrentTurn.ToString();
+                this.gamePanel.ButtonList[index].Content = this.matrixAlgorithm.CurrentTurn.ToString();
                 this.gamePanel.ButtonList.RemoveAt(index);
                 this.matrixAlgorithm.CheckWinner(point, this.matrixAlgorithm.CurrentTurn);
             }
@@ -304,8 +283,6 @@ namespace TicTacToeUi
 
         #endregion AiDifficulty
 
-        #region Events
-
         private void TicTacToeMatrix_EndGame(Object sender, WinnerMessageEventArgs e)
         {
             MessageBox.Show(e.Message);
@@ -315,14 +292,15 @@ namespace TicTacToeUi
                 Winner = e.Winner,
                 RoundCount = this.settings.HistoryList.Count + 1,
             });
-            this.dataGrid.DataSource = this.settings.HistoryList.ToList();
+            this.dataGrid.ItemsSource = this.settings.HistoryList.ToList();
         }
 
-        #endregion Events
+        private void StartButton_Click(Object sender, RoutedEventArgs e)
+        {
+            this.Setup(Convert.ToInt32(this.boardSizeTrackBar.Value));
+        }
 
-        #region Buttons
-
-        private void BtnSave_Click(Object sender, EventArgs e)
+        private void BtnSave_Click(Object sender, RoutedEventArgs e)
         {
             if (this.gamePanel.ButtonList == null || this.matrixAlgorithm == null)
             {
@@ -355,123 +333,110 @@ namespace TicTacToeUi
                 dataBaseWriter.WriteToDataBase(historyData);
             }
 
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            Microsoft.Win32.OpenFileDialog saveFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                saveFileDialog.InitialDirectory = Application.StartupPath + "/settings/";
-                saveFileDialog.Filter = "JSON File(*.json)| *.json; | XML Document(*.xml) | *.xml; | Configuration settings(*.ini) | *.ini";
-                if (saveFileDialog.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-                if (saveFileDialog.FileName.Contains(".json"))
-                {
-                    this.serialize.JsonSerialize(saveFileDialog.FileName, data);
-                    MessageBox.Show($"Your progress was successfully saved to {saveFileDialog.FileName}");
-                }
-                else if (saveFileDialog.FileName.Contains(".xml"))
-                {
-                    this.serialize.XmlSerialize(saveFileDialog.FileName, data);
-                    MessageBox.Show($"Your progress was successfully saved to {saveFileDialog.FileName}");
-                }
-                else if (saveFileDialog.FileName.Contains(".ini"))
-                {
-                    this.iniParseData.WriteIni(saveFileDialog.FileName, data);
-                }
-                else
-                {
-                    MessageBox.Show("Unable to save your progress!");
-                }
+                InitialDirectory = this.StartupPath + "/settings/",
+                Filter = "JSON File(*.json)| *.json; | XML Document(*.xml) | *.xml; | Configuration settings(*.ini) | *.ini"
+            };
+            Boolean? result = saveFileDialog.ShowDialog();
+            if (result == true)
+            {
+                return;
+            }
+            if (saveFileDialog.FileName.Contains(".json"))
+            {
+                this.serialize.JsonSerialize(saveFileDialog.FileName, data);
+                MessageBox.Show($"Your progress was successfully saved to {saveFileDialog.FileName}");
+            }
+            else if (saveFileDialog.FileName.Contains(".xml"))
+            {
+                this.serialize.XmlSerialize(saveFileDialog.FileName, data);
+                MessageBox.Show($"Your progress was successfully saved to {saveFileDialog.FileName}");
+            }
+            else if (saveFileDialog.FileName.Contains(".ini"))
+            {
+                this.iniParseData.WriteIni(saveFileDialog.FileName, data);
+            }
+            else
+            {
+                MessageBox.Show("Unable to save your progress!");
             }
         }
 
-        private void BtnLoad_Click(Object sender, EventArgs e)
+        private void BtnLoad_Click(Object sender, RoutedEventArgs e)
         {
-            using (OpenFileDialog loadFileDialog = new OpenFileDialog())
+            Microsoft.Win32.OpenFileDialog loadFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                loadFileDialog.Filter = "Configuration Files(*.json; *.xml; *.ini;)|*.json; *.xml; *.ini;";
-                loadFileDialog.ShowDialog();
+                Filter = "Configuration Files(*.json; *.xml; *.ini;)|*.json; *.xml; *.ini;"
+            };
+            loadFileDialog.ShowDialog();
 
-                this.iniParseData = (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
-                this.deserializeData = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
+            this.iniParseData = (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
+            this.deserializeData = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
 
-                if (loadFileDialog.FileName.Contains(".json"))
-                {
-                    Data data = this.deserializeData.JsonDeserialize(loadFileDialog.FileName);
-                    this.RecoverData(data);
-                    MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
-                }
-                else if (loadFileDialog.FileName.Contains(".xml"))
-                {
-                    Data data = this.deserializeData.XmlDeserialize(loadFileDialog.FileName);
-                    this.settings.XmlIsUsed = true;
-                    this.RecoverData(data);
-                    this.settings.XmlIsUsed = false;
-                    MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
-                }
-                else if (loadFileDialog.FileName.EndsWith(".ini"))
-                {
-                    Data data = this.iniParseData.ReadIni(loadFileDialog.FileName);
-                    this.RecoverData(data);
-                    MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
-                }
-                else
-                {
-                    MessageBox.Show("Unable to load your progress!");
-                }
+            if (loadFileDialog.FileName.Contains(".json"))
+            {
+                Data data = this.deserializeData.JsonDeserialize(loadFileDialog.FileName);
+                this.RecoverData(data);
+                MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
+            }
+            else if (loadFileDialog.FileName.Contains(".xml"))
+            {
+                Data data = this.deserializeData.XmlDeserialize(loadFileDialog.FileName);
+                this.settings.XmlIsUsed = true;
+                this.RecoverData(data);
+                this.settings.XmlIsUsed = false;
+                MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
+            }
+            else if (loadFileDialog.FileName.EndsWith(".ini"))
+            {
+                Data data = this.iniParseData.ReadIni(loadFileDialog.FileName);
+                this.RecoverData(data);
+                MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
+            }
+            else
+            {
+                MessageBox.Show("Unable to load your progress!");
             }
         }
 
-        private void BtnStart_Click(Object sender, EventArgs e)
-        {
-            this.Setup(this.boardSizeTrackBar.Value);
-        }
-
-        #endregion Buttons
-
-        #region Scrollbar
-
-        private void BoardSizeTrackBar_Scroll(Object sender, EventArgs e)
+        private void BoardSizeTrackBar_ValueChanged(Object sender, RoutedPropertyChangedEventArgs<Double> e)
         {
             this.UpdateScrollBar();
         }
 
         private void UpdateScrollBar()
         {
-            this.txtBoxTrackBar.Text = this.boardSizeTrackBar.Value.ToString();
             if (this.boardSizeTrackBar.Value > 3)
             {
-                this.radioBtnHard.Enabled = false;
-                this.radioBtnMedium.Enabled = false;
+                this.radioBtnHard.IsEnabled = false;
+                this.radioBtnMedium.IsEnabled = false;
 
-                if (this.radioBtnEasy.Checked)
+                if (this.radioBtnEasy.IsChecked == true)
                 {
-                    this.radioBtnEasy.Checked = true;
+                    this.radioBtnEasy.IsChecked = true;
                 }
-                else if (this.radioBtn1vs1.Checked)
+                else if (this.radioBtn1vs1.IsChecked == true)
                 {
-                    this.radioBtn1vs1.Checked = true;
+                    this.radioBtn1vs1.IsChecked = true;
                 }
                 else
                 {
-                    this.radioBtnEasy.Checked = true;
+                    this.radioBtnEasy.IsChecked = true;
                 }
             }
             else
             {
-                this.radioBtnHard.Enabled = true;
-                this.radioBtnMedium.Enabled = true;
+                this.radioBtnHard.IsEnabled = true;
+                this.radioBtnMedium.IsEnabled = true;
             }
         }
-
-        #endregion Scrollbar
-
-        #region LoadSaveGame Methods
 
         private void RecoverData(Data data)
         {
             this.boardSizeTrackBar.Value = data.CurrentGame.BoardSize;
             this.settings.HistoryList = data.HistoryList;
-            this.dataGrid.DataSource = this.settings.HistoryList;
+            this.dataGrid.ItemsSource = this.settings.HistoryList;
             this.RecoverDifficulty(data);
             this.UpdateScrollBar();
             this.RestartGame();
@@ -486,15 +451,18 @@ namespace TicTacToeUi
             this.matrixAlgorithm.EndGame += this.TicTacToeMatrix_EndGame;
             this.gamePanel.Difficulty = difficulty;
 
-            this.mainTableLayloutPanel.Controls.Clear();
 
-            this.mainTableLayloutPanel.RowCount = this.matrixAlgorithm.BoardSize;
-            this.mainTableLayloutPanel.ColumnCount = this.matrixAlgorithm.BoardSize;
+            this.StackPanel.Children.Clear();
+            this.StackPanel.Children.Remove(this.grid);
+            this.StackPanel = new StackPanel();
+            this.grid = new Grid() { Name = "Grid" };
 
             this.gamePanel.ButtonList = new List<Button>();
 
             for (Int32 row = 0; row < this.matrixAlgorithm.BoardSize; row++)
             {
+                this.grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(65) });
+                this.grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(65) });
                 for (Int32 col = 0; col < this.matrixAlgorithm.BoardSize; col++)
                 {
                     Button current = new Button
@@ -503,17 +471,19 @@ namespace TicTacToeUi
                         Width = 62,
                         Tag = new PointIndex(col, row)
                     };
+                    Grid.SetRow(current, row);
+                    Grid.SetColumn(current, col);
+                    this.grid.Children.Add(current);
 
+                    this.StackPanel.Children.Add(this.grid);
                     this.gamePanel.ButtonList.Add(current);
                     if (this.matrixAlgorithm.Board[col, row] != PlayerType.Unassigned)
                     {
-                        current.Text = this.matrixAlgorithm.Board[col, row].ToString();
+                        current.Content = this.matrixAlgorithm.Board[col, row].ToString();
                         this.gamePanel.ButtonList.Remove(current);
                     }
 
                     current.Click += this.PlayerButtonOnClick;
-
-                    this.mainTableLayloutPanel.Controls.Add(current, col, row);
                 }
             }
 
@@ -534,35 +504,31 @@ namespace TicTacToeUi
 
         private void RecoverDifficulty(Data data)
         {
-            this.radioBtnEasy.Checked = false;
-            this.radioBtnMedium.Checked = false;
-            this.radioBtnHard.Checked = false;
-            this.radioBtn1vs1.Checked = false;
+            this.radioBtnEasy.IsChecked = false;
+            this.radioBtnMedium.IsChecked = false;
+            this.radioBtnHard.IsChecked = false;
+            this.radioBtn1vs1.IsChecked = false;
             this.boardSizeTrackBar.Value = data.CurrentGame.BoardSize;
             this.txtBoxTrackBar.Text = data.CurrentGame.BoardSize.ToString();
             if (data.Difficulty == Difficulty.Easy)
             {
-                this.radioBtnEasy.Checked = true;
+                this.radioBtnEasy.IsChecked = true;
                 return;
             }
             if (data.Difficulty == Difficulty.Middle)
             {
-                this.radioBtnMedium.Checked = true;
+                this.radioBtnMedium.IsChecked = true;
                 return;
             }
             if (data.Difficulty == Difficulty.Hard)
             {
-                this.radioBtnHard.Checked = true;
+                this.radioBtnHard.IsChecked = true;
                 return;
             }
-            this.radioBtn1vs1.Checked = true;
+            this.radioBtn1vs1.IsChecked = true;
         }
 
-        #endregion LoadSaveGame Methods
-
-        #region MainWindow Events
-
-        private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
+        private void Window_Closing(Object sender, System.ComponentModel.CancelEventArgs e)
         {
             DataBaseWriter dataBaseWrite = new DataBaseWriter();
             this.mapper = new Mapper();
@@ -586,25 +552,31 @@ namespace TicTacToeUi
             };
             dataBaseWrite.WriteToDataBase(historyData);
             this.serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
-            this.serialize.JsonSerialize(Application.StartupPath + "/settings/autosave.json", data);
-            this.serialize.XmlSerialize(Application.StartupPath + "/settings/autosave.xml", data);
+            this.serialize.JsonSerialize(this.StartupPath + "/settings/autosave.json", data);
+            this.serialize.XmlSerialize(this.StartupPath + "/settings/autosave.xml", data);
         }
 
-        private void MainWindow_Load(Object sender, EventArgs e)
+        private void Window_Loaded(Object sender, RoutedEventArgs e)
         {
-            if (!Directory.Exists(Application.StartupPath + "/settings/"))
+            if (!Directory.Exists(this.StartupPath + "/settings/"))
             {
-                Directory.CreateDirectory(Application.StartupPath + "/settings/");
+                Directory.CreateDirectory(this.StartupPath + "/settings/");
             }
 
-            if (File.Exists(Application.StartupPath + "/settings/autosave.json"))
+            if (File.Exists(this.StartupPath + "/settings/autosave.json"))
             {
                 this.deserializeData = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
-                Data data = this.deserializeData.JsonDeserialize(Application.StartupPath + "/settings/autosave.json");
+                Data data = this.deserializeData.JsonDeserialize(this.StartupPath + "/settings/autosave.json");
                 this.RecoverData(data);
             }
         }
 
-        #endregion MainWindow Events
+        public String StartupPath
+        {
+            get
+            {
+                return System.AppDomain.CurrentDomain.BaseDirectory;
+            }
+        }
     }
 }
