@@ -243,7 +243,7 @@ namespace TicTacToeUi
                 return;
             }
 
-            PointIndex aiHardPoint = this.aiMove.AiHardMode(this.matrixAlgorithm);
+            PointIndex aiHardPoint = this.aiMove.GetAiHardPointIndex(this.matrixAlgorithm);
 
             foreach (Button button in this.gamePanel.ButtonList)
             {
@@ -264,7 +264,7 @@ namespace TicTacToeUi
 
         private void AiHardMode()
         {
-            PointIndex aiMediumPoint = this.aiMove.AiMediumMode(this.matrixAlgorithm);
+            PointIndex aiMediumPoint = this.aiMove.GetAiMediumPointIndex(this.matrixAlgorithm);
             foreach (Button button in this.gamePanel.ButtonList)
             {
                 if (!button.Tag.Equals(aiMediumPoint))
@@ -289,7 +289,7 @@ namespace TicTacToeUi
         {
             if (this.gamePanel.ButtonList.Count > 0)
             {
-                Int32 index = this.aiMove.AiRandom(this.gamePanel.ButtonList);
+                Int32 index = this.aiMove.GetAiEasyPointIndex(this.gamePanel.ButtonList);
                 PointIndex point = (PointIndex)this.gamePanel.ButtonList[index].Tag;
                 this.matrixAlgorithm.Board[point.X, point.Y] = this.matrixAlgorithm.CurrentTurn;
                 this.gamePanel.ButtonList[index].Text = this.matrixAlgorithm.CurrentTurn.ToString();

@@ -18,28 +18,28 @@ namespace TicTacToeMatch.Interfaces
 
         Int32 FunctionCalls { get; set; }
 
-        Int32 AiRandom(List<Button> buttonList);
+        Int32 GetAiEasyPointIndex(List<Button> buttonList);
 
-        Boolean IsMoveLeft(IMatrixAlgorithm ticTacToeMatrix);
+        Boolean GetMovesLeft(IMatrixAlgorithm ticTacToeMatrix);
 
-        Int32 MiniMax(IMatrixAlgorithm ticTacToeMatrix, Int32 depth, Boolean isMax);
+        Int32 GetMiniMaxMedium(IMatrixAlgorithm ticTacToeMatrix, Int32 depth, Boolean isMax);
 
-        Move FindBestMove(IMatrixAlgorithm ticTacToeMatrix);
+        Move GetBestAiMoveMedium(IMatrixAlgorithm ticTacToeMatrix);
 
-        PointIndex AiMediumMode(IMatrixAlgorithm ticTacToeMatrix);
+        PointIndex GetAiMediumPointIndex(IMatrixAlgorithm ticTacToeMatrix);
 
-        Int32 Evaluate(PlayerType[,] state);
+        Int32 EvaluateAiMediumMoves(PlayerType[,] state);
 
-        Boolean IsMoveLeftHard(IMatrixAlgorithm ticTacToeMatrix, PlayerType[,] newBoard);
+        Boolean GetMovesLeftAiHard(IMatrixAlgorithm ticTacToeMatrix, PlayerType[,] newBoard);
 
-        Int32 MiniMaxHard(PlayerType[,] newBoard, PlayerType state, IMatrixAlgorithm ticTacToeMatrix);
+        Int32 GetMiniMaxAiHard(PlayerType[,] newBoard, PlayerType state, IMatrixAlgorithm ticTacToeMatrix);
 
-        void AiHardMaxValue();
+        void CalcMaxValueAiHard();
 
-        void AiHardMinValue();
+        void CalcMinValueAiHard();
 
-        PointIndex AiHardMode(IMatrixAlgorithm ticTacToeMatrix);
+        PointIndex GetAiHardPointIndex(IMatrixAlgorithm ticTacToeMatrix);
 
-        Boolean EvaluateHard(PlayerType[,] state, PlayerType player);
+        Boolean EvaluateAiHardMode(PlayerType[,] state, PlayerType player);
     }
 }

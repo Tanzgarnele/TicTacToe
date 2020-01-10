@@ -19,7 +19,7 @@ namespace TicTacToeMatch.Internal
 
         public Int32 FunctionCalls { get; set; }
 
-        public Int32 AiRandom(List<Button> buttonList)
+        public Int32 GetAiEasyPointIndex(List<Button> buttonList)
         {
             this.Rand = new Random();
             return this.Rand.Next(buttonList.Count);
@@ -27,7 +27,7 @@ namespace TicTacToeMatch.Internal
 
         #region AiMediumMode
 
-        public Boolean IsMoveLeft(IMatrixAlgorithm ticTacToeMatrix)
+        public Boolean GetMovesLeft(IMatrixAlgorithm ticTacToeMatrix)
         {
             for (Int32 x = 0; x < ticTacToeMatrix.BoardSize; x++)
             {
@@ -42,9 +42,9 @@ namespace TicTacToeMatch.Internal
             return true;
         }
 
-        public Int32 MiniMax(IMatrixAlgorithm ticTacToeMatrix, Int32 depth, Boolean isMax)
+        public Int32 GetMiniMaxMedium(IMatrixAlgorithm ticTacToeMatrix, Int32 depth, Boolean isMax)
         {
-            Int32 score = this.Evaluate(ticTacToeMatrix.Board) - depth;
+            Int32 score = this.EvaluateAiMediumMoves(ticTacToeMatrix.Board) - depth;
 
             if (score == 10)
             {
@@ -56,7 +56,7 @@ namespace TicTacToeMatch.Internal
                 return depth - score;
             }
 
-            if (this.IsMoveLeft(ticTacToeMatrix))
+            if (this.GetMovesLeft(ticTacToeMatrix))
             {
                 return score;
             }
@@ -74,7 +74,7 @@ namespace TicTacToeMatch.Internal
                         {
                             ticTacToeMatrix.Board[x, y] = PlayerType.X;
 
-                            best = Math.Max(best, this.MiniMax(ticTacToeMatrix, depth, false));
+                            best = Math.Max(best, this.GetMiniMaxMedium(ticTacToeMatrix, depth, false));
 
                             ticTacToeMatrix.Board[x, y] = PlayerType.Unassigned;
                         }
@@ -94,7 +94,7 @@ namespace TicTacToeMatch.Internal
                         {
                             ticTacToeMatrix.Board[x, y] = PlayerType.O;
 
-                            best = Math.Min(best, this.MiniMax(ticTacToeMatrix, depth, true));
+                            best = Math.Min(best, this.GetMiniMaxMedium(ticTacToeMatrix, depth, true));
 
                             ticTacToeMatrix.Board[x, y] = PlayerType.Unassigned;
                         }
@@ -104,7 +104,7 @@ namespace TicTacToeMatch.Internal
             }
         }
 
-        public Move FindBestMove(IMatrixAlgorithm ticTacToeMatrix)
+        public Move GetBestAiMoveMedium(IMatrixAlgorithm ticTacToeMatrix)
         {
             Move bestMove = new Move
             {
@@ -121,7 +121,7 @@ namespace TicTacToeMatch.Internal
                     {
                         ticTacToeMatrix.Board[x, y] = PlayerType.X;
 
-                        Int32 score = this.MiniMax(ticTacToeMatrix, 0, false);
+                        Int32 score = this.GetMiniMaxMedium(ticTacToeMatrix, 0, false);
 
                         ticTacToeMatrix.Board[x, y] = PlayerType.Unassigned;
 
@@ -138,9 +138,9 @@ namespace TicTacToeMatch.Internal
             return bestMove;
         }
 
-        public PointIndex AiMediumMode(IMatrixAlgorithm ticTacToeMatrix)
+        public PointIndex GetAiMediumPointIndex(IMatrixAlgorithm ticTacToeMatrix)
         {
-            Move bestMove = this.FindBestMove(ticTacToeMatrix);
+            Move bestMove = this.GetBestAiMoveMedium(ticTacToeMatrix);
 
             PointIndex point = new PointIndex
             {
@@ -151,7 +151,7 @@ namespace TicTacToeMatch.Internal
             return point;
         }
 
-        public Int32 Evaluate(PlayerType[,] state)
+        public Int32 EvaluateAiMediumMoves(PlayerType[,] state)
         {
             for (Int32 row = 0; row < 3; row++)
             {
@@ -220,7 +220,7 @@ namespace TicTacToeMatch.Internal
 
         #region AiHardMode
 
-        public Boolean IsMoveLeftHard(IMatrixAlgorithm ticTacToeMatrix, PlayerType[,] newBoard)
+        public Boolean GetMovesLeftAiHard(IMatrixAlgorithm ticTacToeMatrix, PlayerType[,] newBoard)
         {
             for (Int32 x = 0; x < ticTacToeMatrix.BoardSize; x++)
             {
@@ -235,19 +235,19 @@ namespace TicTacToeMatch.Internal
             return true;
         }
 
-        public Int32 MiniMaxHard(PlayerType[,] newBoard, PlayerType state, IMatrixAlgorithm ticTacToeMatrix)
+        public Int32 GetMiniMaxAiHard(PlayerType[,] newBoard, PlayerType state, IMatrixAlgorithm ticTacToeMatrix)
         {
             this.FunctionCalls++;
 
-            if (this.EvaluateHard(newBoard, PlayerType.X))
+            if (this.EvaluateAiHardMode(newBoard, PlayerType.X))
             {
                 return -10;
             }
-            else if (this.EvaluateHard(newBoard, PlayerType.O))
+            else if (this.EvaluateAiHardMode(newBoard, PlayerType.O))
             {
                 return 10;
             }
-            else if (this.IsMoveLeftHard(ticTacToeMatrix, newBoard))
+            else if (this.GetMovesLeftAiHard(ticTacToeMatrix, newBoard))
             {
                 return 0;
             }
@@ -265,12 +265,12 @@ namespace TicTacToeMatch.Internal
 
                         if (state == PlayerType.X)
                         {
-                            Int32 result = this.MiniMaxHard(newBoard, PlayerType.O, ticTacToeMatrix);
+                            Int32 result = this.GetMiniMaxAiHard(newBoard, PlayerType.O, ticTacToeMatrix);
                             nextMove.Score = result;
                         }
                         else
                         {
-                            Int32 result = this.MiniMaxHard(newBoard, PlayerType.X, ticTacToeMatrix);
+                            Int32 result = this.GetMiniMaxAiHard(newBoard, PlayerType.X, ticTacToeMatrix);
                             nextMove.Score = result;
                         }
 
@@ -284,11 +284,11 @@ namespace TicTacToeMatch.Internal
             switch (state)
             {
                 case PlayerType.X:
-                    this.AiHardMinValue();
+                    this.CalcMinValueAiHard();
                     break;
 
                 case PlayerType.O:
-                    this.AiHardMaxValue();
+                    this.CalcMaxValueAiHard();
                     break;
 
                 default:
@@ -298,7 +298,7 @@ namespace TicTacToeMatch.Internal
             return this.BestPointIndex;
         }
 
-        public void AiHardMaxValue()
+        public void CalcMaxValueAiHard()
         {
             Int32 bestScore = Int32.MaxValue;
 
@@ -313,7 +313,7 @@ namespace TicTacToeMatch.Internal
             }
         }
 
-        public void AiHardMinValue()
+        public void CalcMinValueAiHard()
         {
             Int32 bestScore = Int32.MinValue;
 
@@ -328,13 +328,13 @@ namespace TicTacToeMatch.Internal
             }
         }
 
-        public PointIndex AiHardMode(IMatrixAlgorithm ticTacToeMatrix)
+        public PointIndex GetAiHardPointIndex(IMatrixAlgorithm ticTacToeMatrix)
         {
-            this.MiniMaxHard(ticTacToeMatrix.Board, PlayerType.O, ticTacToeMatrix);
+            this.GetMiniMaxAiHard(ticTacToeMatrix.Board, PlayerType.O, ticTacToeMatrix);
             return this.BestPointMove;
         }
 
-        public Boolean EvaluateHard(PlayerType[,] state, PlayerType player)
+        public Boolean EvaluateAiHardMode(PlayerType[,] state, PlayerType player)
         {
             for (Int32 row = 0; row < 3; row++)
             {
