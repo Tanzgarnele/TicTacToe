@@ -34,7 +34,7 @@ namespace TicTacToeMatch.Internal
 
                 if (x == this.BoardSize - 1)
                 {
-                    this.WinnerMessage(state);
+                    this.GetWinnerMessage(state);
                     this.WinnerState = true;
                     return true;
                 }
@@ -49,7 +49,7 @@ namespace TicTacToeMatch.Internal
 
                 if (y == this.BoardSize - 1)
                 {
-                    this.WinnerMessage(state);
+                    this.GetWinnerMessage(state);
                     this.WinnerState = true;
                     return true;
                 }
@@ -64,7 +64,7 @@ namespace TicTacToeMatch.Internal
 
                 if (x == this.BoardSize - 1 || y == this.BoardSize - 1)
                 {
-                    this.WinnerMessage(state);
+                    this.GetWinnerMessage(state);
                     this.WinnerState = true;
                     return true;
                 }
@@ -79,7 +79,7 @@ namespace TicTacToeMatch.Internal
 
                 if (x == 0 || y == this.BoardSize - 1)
                 {
-                    this.WinnerMessage(state);
+                    this.GetWinnerMessage(state);
                     this.WinnerState = true;
                     return true;
                 }
@@ -88,7 +88,7 @@ namespace TicTacToeMatch.Internal
             this.CurrentTurnCount++;
             if (this.CurrentTurnCount == this.BoardSize * this.BoardSize)
             {
-                this.WinnerMessage(state);
+                this.GetWinnerMessage(state);
                 this.WinnerState = true;
                 return true;
             }
@@ -97,7 +97,7 @@ namespace TicTacToeMatch.Internal
             return false;
         }
 
-        public void Initialize(Int32 dimension)
+        public void InitializeBoard(Int32 dimension)
         {
             this.Board = new PlayerType[dimension, dimension];
             this.BoardSize = dimension;
@@ -105,7 +105,7 @@ namespace TicTacToeMatch.Internal
 
         #region WinnerMessage
 
-        internal void WinnerMessage(PlayerType check)
+        internal void GetWinnerMessage(PlayerType check)
         {
             if (this.CurrentTurnCount == this.BoardSize * this.BoardSize)
             {

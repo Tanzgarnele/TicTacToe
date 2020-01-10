@@ -20,6 +20,6 @@ namespace TicTacToeMatch.Interfaces
 
         Boolean CheckWinner(PointIndex point, PlayerType state);
 
-        void Initialize(Int32 dimension);
+        void InitializeBoard(Int32 dimension);
     }
 }

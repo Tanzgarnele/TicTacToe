@@ -109,7 +109,7 @@ namespace TicTacToeUi
                 }
             }
 
-            this.matrixAlgorithm.Initialize(dimension);
+            this.matrixAlgorithm.InitializeBoard(dimension);
 
             if (this.gamePanel.Difficulty == Difficulty.Middle)
             {
