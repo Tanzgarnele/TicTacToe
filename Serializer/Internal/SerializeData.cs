@@ -10,7 +10,7 @@ namespace Serializer.Internal
 {
     internal class SerializeData : ISerializeData
     {
-        public void JsonSerialize<Data>(String fileName, Data data)
+        public void SerializeJson<Data>(String fileName, Data data)
         {
             String result = JsonConvert.SerializeObject(data);
 
@@ -20,7 +20,7 @@ namespace Serializer.Internal
             }
         }
 
-        public void XmlSerialize(String fileName, Data data)
+        public void SerializeXml(String fileName, Data data)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(data.GetType());
 

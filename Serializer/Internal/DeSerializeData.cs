@@ -9,7 +9,7 @@ namespace Serializer.Internal
 {
     internal class DeSerializer : IDeSerializeData
     {
-        public Data JsonDeserialize(String filePath)
+        public Data DeserializeJson(String filePath)
         {
             using (StreamReader readFile = File.OpenText(filePath))
             {
@@ -19,7 +19,7 @@ namespace Serializer.Internal
             }
         }
 
-        public Data XmlDeserialize(String filePath)
+        public Data DeserializeXml(String filePath)
         {
             using (StreamReader readFile = File.OpenText(filePath))
             {

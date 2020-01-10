@@ -5,8 +5,8 @@ namespace Serializer.Interface
 {
     public  interface IDeSerializeData
     {
-        Data JsonDeserialize(String filePath);
+        Data DeserializeJson(String filePath);
 
-        Data XmlDeserialize(String filePath);
+        Data DeserializeXml(String filePath);
     }
 }

@@ -14,10 +14,9 @@ namespace Serializer.Internal
 {
     internal class IniParseData : IIniParseData
     {
-        public Int32 Index { get; set; } = 0;
         private IMatrixAlgorithm MatrixAlgorithm { get; set; }
 
-        public void WriteIni(String fileName, Data data)
+        public void IniWriter(String fileName, Data data)
         {
             FileIniDataParser parser = new FileIniDataParser();
             IniData iniData = new IniData();

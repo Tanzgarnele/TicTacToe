@@ -336,7 +336,7 @@ namespace TicTacToeUi
                 BoardSize = this.matrixAlgorithm.BoardSize,
                 CurrentTurn = this.matrixAlgorithm.CurrentTurn,
                 CurrentTurnCount = this.matrixAlgorithm.CurrentTurnCount,
-                BoardData = this.mapper.CurrentBoardToString(this.matrixAlgorithm),
+                BoardData = this.mapper.WriteCurrentBoardToString(this.matrixAlgorithm),
             };
             Data data = new Data
             {
@@ -365,17 +365,17 @@ namespace TicTacToeUi
                 }
                 if (saveFileDialog.FileName.Contains(".json"))
                 {
-                    this.serialize.JsonSerialize(saveFileDialog.FileName, data);
+                    this.serialize.SerializeJson(saveFileDialog.FileName, data);
                     MessageBox.Show($"Your progress was successfully saved to {saveFileDialog.FileName}");
                 }
                 else if (saveFileDialog.FileName.Contains(".xml"))
                 {
-                    this.serialize.XmlSerialize(saveFileDialog.FileName, data);
+                    this.serialize.SerializeXml(saveFileDialog.FileName, data);
                     MessageBox.Show($"Your progress was successfully saved to {saveFileDialog.FileName}");
                 }
                 else if (saveFileDialog.FileName.Contains(".ini"))
                 {
-                    this.iniParseData.WriteIni(saveFileDialog.FileName, data);
+                    this.iniParseData.IniWriter(saveFileDialog.FileName, data);
                 }
                 else
                 {
@@ -396,13 +396,13 @@ namespace TicTacToeUi
 
                 if (loadFileDialog.FileName.Contains(".json"))
                 {
-                    Data data = this.deserializeData.JsonDeserialize(loadFileDialog.FileName);
+                    Data data = this.deserializeData.DeserializeJson(loadFileDialog.FileName);
                     this.RecoverData(data);
                     MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
                 }
                 else if (loadFileDialog.FileName.Contains(".xml"))
                 {
-                    Data data = this.deserializeData.XmlDeserialize(loadFileDialog.FileName);
+                    Data data = this.deserializeData.DeserializeXml(loadFileDialog.FileName);
                     this.settings.XmlIsUsed = true;
                     this.RecoverData(data);
                     this.settings.XmlIsUsed = false;
@@ -526,7 +526,7 @@ namespace TicTacToeUi
         private void UpdateMatrixAlgorithm()
         {
             this.matrixAlgorithm.EndGame -= this.TicTacToeMatrix_EndGame;
-            this.matrixAlgorithm.Board = this.mapper.CurrentStringToBoard(this.savedGameState.BoardData, this.matrixAlgorithm);
+            this.matrixAlgorithm.Board = this.mapper.WriteCurrentStringToBoard(this.savedGameState.BoardData, this.matrixAlgorithm);
             this.matrixAlgorithm.BoardSize = this.savedGameState.BoardSize;
             this.matrixAlgorithm.CurrentTurn = this.savedGameState.CurrentTurn;
             this.matrixAlgorithm.CurrentTurnCount = this.savedGameState.CurrentTurnCount;
@@ -571,7 +571,7 @@ namespace TicTacToeUi
                 BoardSize = this.matrixAlgorithm.BoardSize,
                 CurrentTurn = this.matrixAlgorithm.CurrentTurn,
                 CurrentTurnCount = this.matrixAlgorithm.CurrentTurnCount,
-                BoardData = this.mapper.CurrentBoardToString(this.matrixAlgorithm),
+                BoardData = this.mapper.WriteCurrentBoardToString(this.matrixAlgorithm),
             };
             Data data = new Data
             {
@@ -586,8 +586,8 @@ namespace TicTacToeUi
             };
             dataBaseWrite.WriteToDataBase(historyData);
             this.serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
-            this.serialize.JsonSerialize(Application.StartupPath + "/settings/autosave.json", data);
-            this.serialize.XmlSerialize(Application.StartupPath + "/settings/autosave.xml", data);
+            this.serialize.SerializeJson(Application.StartupPath + "/settings/autosave.json", data);
+            this.serialize.SerializeXml(Application.StartupPath + "/settings/autosave.xml", data);
         }
 
         private void MainWindow_Load(Object sender, EventArgs e)
@@ -600,7 +600,7 @@ namespace TicTacToeUi
             if (File.Exists(Application.StartupPath + "/settings/autosave.json"))
             {
                 this.deserializeData = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
-                Data data = this.deserializeData.JsonDeserialize(Application.StartupPath + "/settings/autosave.json");
+                Data data = this.deserializeData.DeserializeJson(Application.StartupPath + "/settings/autosave.json");
                 this.RecoverData(data);
             }
         }

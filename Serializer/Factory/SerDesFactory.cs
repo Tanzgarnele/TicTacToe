@@ -10,17 +10,17 @@ namespace Serializer.Factory
         {
             if (type == typeof(ISerializeData))
             {
-                return new SerializeData(); // TODO: Implementierung machen und hier erzeugen und zurückgeben.
+                return new SerializeData();
             }
 
             if (type == typeof(IIniParseData))
             {
-                return new IniParseData(); // TODO: Implementierung machen und hier erzeugen und zurückgeben.
+                return new IniParseData();
             }
 
             if (type == typeof(IDeSerializeData))
             {
-                return new DeSerializer(); // TODO: Implementierung machen und hier erzeugen und zurückgeben.
+                return new DeSerializer();
             }
 
             // TODO: für jedes weiter Interface (plus Impl.) ein neues IF analog zu oben!!!

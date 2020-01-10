@@ -8,7 +8,7 @@ namespace Serializer.Mapper
     public class Mapper
     {
 
-        public String CurrentBoardToString(IMatrixAlgorithm matrixAlgorithm)
+        public String WriteCurrentBoardToString(IMatrixAlgorithm matrixAlgorithm)
         {
             StringBuilder stringBuilder = new StringBuilder(String.Empty);
             for (Int32 x = 0; x < matrixAlgorithm.Board.GetLength(0); x++)
@@ -26,7 +26,7 @@ namespace Serializer.Mapper
             return stringBuilder.ToString();
         }
 
-        public PlayerType[,] CurrentStringToBoard(String BoardData, IMatrixAlgorithm matrixAlgorithm)
+        public PlayerType[,] WriteCurrentStringToBoard(String BoardData, IMatrixAlgorithm matrixAlgorithm)
         {
             for (Int32 board = 0; board < matrixAlgorithm.BoardSize* matrixAlgorithm.BoardSize ; board++)
             {
