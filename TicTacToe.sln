@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerDes", "Serializer\SerDes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseManager", "DataBaseManager\DataBaseManager.csproj", "{9872A01D-C394-46BF-991D-E2CC54759F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeWpf", "TicTacToeWpf\TicTacToeWpf.csproj", "{ED6E225C-A767-46D2-82FE-A0A9CA5C84CD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{9872A01D-C394-46BF-991D-E2CC54759F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9872A01D-C394-46BF-991D-E2CC54759F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9872A01D-C394-46BF-991D-E2CC54759F45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED6E225C-A767-46D2-82FE-A0A9CA5C84CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED6E225C-A767-46D2-82FE-A0A9CA5C84CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED6E225C-A767-46D2-82FE-A0A9CA5C84CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED6E225C-A767-46D2-82FE-A0A9CA5C84CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
