@@ -20,7 +20,7 @@ namespace DataBaseManager.Internals
             SQLiteConnection newConnection = new SQLiteConnection($"Data source={directory}; Version=3;");
             newConnection.Open();
 
-            String createTable = "Create Table history (Round int, Winner varchar(10))";
+            String createTable = "CREATE TABLE History (Round int, Winner varchar(10))";
 
             SQLiteCommand createTableCommand = new SQLiteCommand(createTable, newConnection);
             createTableCommand.ExecuteNonQuery();

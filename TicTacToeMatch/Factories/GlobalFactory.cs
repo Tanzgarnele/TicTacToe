@@ -15,7 +15,7 @@ namespace TicTacToeMatch.Factories
 
             if (type == typeof(IAiMove))
             {
-                return new AiMove(); 
+                return new AiMove();
             }
 
             throw new NotSupportedException();

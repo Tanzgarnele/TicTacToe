@@ -10,7 +10,7 @@ namespace DataBaseManager.Internals
 {
     internal class DataBaseWriter : IDataBaseWriter
     {
-        readonly IDataBaseConnection dataBaseConnection = (IDataBaseConnection)DataBaseManagerFactory.Create(typeof(IDataBaseConnection));
+        private readonly IDataBaseConnection dataBaseConnection = (IDataBaseConnection)DataBaseManagerFactory.Create(typeof(IDataBaseConnection));
         private static readonly String directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\settings\\autosave.db";
 
         public void WriteDatabaseFile(HistoryData historyData)
@@ -29,18 +29,18 @@ namespace DataBaseManager.Internals
 
             stopWatch.Start();
 
-            String qry = "Delete From history Where Round > 0";
+            String qry = "DELETE FROM History WHERE Round > 0";
             this.dataBaseConnection.ModifyData(qry);
 
-            String query = "begin";
+            String query = "BEGIN";
             this.dataBaseConnection.ModifyData(query);
 
             for (Int32 i = 0; i < historyData.HistoryList.Count; i++)
             {
-                query = $"Insert into history(Round, Winner) Values ({historyData.HistoryList[i].RoundCount}, '{historyData.HistoryList[i].Winner}')";
+                query = $"INSERT INTO History(Round, Winner) VALUES ({historyData.HistoryList[i].RoundCount}, '{historyData.HistoryList[i].Winner}')";
                 this.dataBaseConnection.ModifyData(query);
             }
-            query = "end";
+            query = "END";
             this.dataBaseConnection.ModifyData(query);
             Console.WriteLine("{0} seconds with one transaction", stopWatch.Elapsed.TotalSeconds);
             this.dataBaseConnection.CloseDataBaseConnection();

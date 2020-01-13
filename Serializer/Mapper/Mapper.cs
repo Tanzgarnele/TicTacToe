@@ -42,7 +42,7 @@ namespace Serializer.Mapper
                 throw new ArgumentNullException(nameof(matrixAlgorithm));
             }
 
-            for (Int32 board = 0; board < matrixAlgorithm.BoardSize* matrixAlgorithm.BoardSize ; board++)
+            for (Int32 board = 0; board < matrixAlgorithm.BoardSize * matrixAlgorithm.BoardSize; board++)
             {
                 BoardData = BoardData.Replace("}", String.Empty);
                 BoardData = BoardData.Replace("{", String.Empty);

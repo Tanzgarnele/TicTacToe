@@ -3,7 +3,7 @@ using System;
 
 namespace Serializer.Interfaces
 {
-    public  interface IDeSerializeData
+    public interface IDeSerializeData
     {
         Data DeserializeJson(String filePath);
 

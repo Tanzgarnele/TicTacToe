@@ -9,6 +9,5 @@ namespace Serializer.Enteties
         public Int32 BoardSize { get; set; }
         public PlayerType CurrentTurn { get; set; }
         public String BoardData { get; set; }
-
     }
 }

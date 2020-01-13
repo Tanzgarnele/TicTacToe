@@ -55,7 +55,6 @@ namespace Serializer.Internals
                 throw new ArgumentOutOfRangeException(nameof(fileName), "file name may not be empty, null or whitespace");
             }
 
-
             this.MatrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
             FileIniDataParser parser = new FileIniDataParser();
             IniData iniData = parser.ReadFile(fileName);
