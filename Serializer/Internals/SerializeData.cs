@@ -14,7 +14,7 @@ namespace Serializer.Internals
         {
             if (String.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentOutOfRangeException(nameof(fileName), "File path may not be null, empty or whitespace");
+                throw new ArgumentOutOfRangeException(nameof(fileName), "File path may not be null, empty or consist of white-space characters.");
             }
 
             if (data is null)
@@ -34,7 +34,7 @@ namespace Serializer.Internals
         {
             if (String.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentOutOfRangeException(nameof(fileName), "File path may not be null, empty or whitespace");
+                throw new ArgumentOutOfRangeException(nameof(fileName), "File path may not be null, empty or consist of white-space characters.");
             }
 
             if (data is null)

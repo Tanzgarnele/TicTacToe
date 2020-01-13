@@ -13,7 +13,7 @@ namespace Serializer.Internals
         {
             if (String.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentOutOfRangeException(nameof(filePath), "File path may not be null, empty or whitespace");
+                throw new ArgumentOutOfRangeException(nameof(filePath), "File path may not be null, empty or consist of white-space characters.");
             }
 
             using (StreamReader readFile = File.OpenText(filePath))
@@ -28,7 +28,7 @@ namespace Serializer.Internals
         {
             if (String.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentOutOfRangeException(nameof(filePath), "File path may not be null, empty or whitespace");
+                throw new ArgumentOutOfRangeException(nameof(filePath), "File path may not be null, empty or consist of white-space characters.");
             }
 
             using (StreamReader readFile = File.OpenText(filePath))
