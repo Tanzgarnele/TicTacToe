@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 
-namespace DataBaseManager.Interfaces
+namespace DataBaseManager.Interface
 {
     public interface IDataBaseConnection
     {

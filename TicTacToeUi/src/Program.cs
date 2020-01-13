@@ -1,5 +1,5 @@
 ﻿using DataBaseManager.Factories;
-using DataBaseManager.Interfaces;
+using DataBaseManager.Interface;
 using Serializer.Factories;
 using Serializer.Interfaces;
 using System;

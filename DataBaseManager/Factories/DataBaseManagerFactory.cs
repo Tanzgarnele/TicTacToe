@@ -1,5 +1,5 @@
-﻿using DataBaseManager.Interfaces;
-using DataBaseManager.Internals;
+﻿using DataBaseManager.Interface;
+using DataBaseManager.Internal;
 using System;
 
 namespace DataBaseManager.Factories

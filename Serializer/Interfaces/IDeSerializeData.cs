@@ -1,5 +1,6 @@
 ﻿using Serializer.Enteties;
 using System;
+using System.Threading.Tasks;
 
 namespace Serializer.Interfaces
 {

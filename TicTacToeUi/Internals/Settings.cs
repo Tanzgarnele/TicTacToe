@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TicTacToeMatch.Entities;
 using TicTacToeUi.Interfaces;
 
-namespace TicTacToeUi.Internals
+namespace TicTacToeUi.Internal
 {
     internal class Settings : ISettings
     {

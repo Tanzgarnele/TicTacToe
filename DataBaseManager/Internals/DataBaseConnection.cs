@@ -1,11 +1,12 @@
-﻿using DataBaseManager.Interfaces;
+﻿using DataBaseManager.Interface;
 using System;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
-namespace DataBaseManager.Internals
+namespace DataBaseManager.Internal
 {
     internal class DataBaseConnection : IDataBaseConnection
     {
@@ -18,10 +19,9 @@ namespace DataBaseManager.Internals
             SQLiteConnection.CreateFile(directory);
 
             SQLiteConnection newConnection = new SQLiteConnection($"Data source={directory}; Version=3;");
-            newConnection.Open();
+             newConnection.Open();
 
-            String createTable = "CREATE TABLE History (Round int, Winner varchar(10))";
-
+            String createTable = "Create Table history (Round int, Winner varchar(10))";
             SQLiteCommand createTableCommand = new SQLiteCommand(createTable, newConnection);
             createTableCommand.ExecuteNonQuery();
             createTableCommand.Dispose();
@@ -33,7 +33,7 @@ namespace DataBaseManager.Internals
         {
             try
             {
-                this.connection.Open();
+                 this.connection.Open();
                 Console.WriteLine("Verbindung aufgebaut");
             }
             catch (Exception ex)
@@ -50,11 +50,6 @@ namespace DataBaseManager.Internals
 
         public DataTable GetData(String query)
         {
-            if (String.IsNullOrWhiteSpace(query))
-            {
-                throw new ArgumentOutOfRangeException(nameof(query), "query may not be null, empty or whitespace");
-            }
-
             DataTable dt = new DataTable();
             SQLiteCommand cmd = new SQLiteCommand(query, this.connection)
             {
@@ -69,11 +64,6 @@ namespace DataBaseManager.Internals
 
         public void ModifyData(String query)
         {
-            if (String.IsNullOrWhiteSpace(query))
-            {
-                throw new ArgumentOutOfRangeException(nameof(query), "query may not be null, empty or whitespace");
-            }
-
             SQLiteCommand cmd = new SQLiteCommand
             {
                 Connection = connection,
