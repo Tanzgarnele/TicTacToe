@@ -206,7 +206,7 @@
             // 
             // txtBoxTrackBar
             // 
-            this.txtBoxTrackBar.Location = new System.Drawing.Point(853, 32);
+            this.txtBoxTrackBar.Location = new System.Drawing.Point(779, 36);
             this.txtBoxTrackBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtBoxTrackBar.Name = "txtBoxTrackBar";
             this.txtBoxTrackBar.ReadOnly = true;
@@ -221,7 +221,7 @@
             this.boardSizeTrackBar.Maximum = 7;
             this.boardSizeTrackBar.Minimum = 3;
             this.boardSizeTrackBar.Name = "boardSizeTrackBar";
-            this.boardSizeTrackBar.Size = new System.Drawing.Size(832, 45);
+            this.boardSizeTrackBar.Size = new System.Drawing.Size(759, 45);
             this.boardSizeTrackBar.SmallChange = 2;
             this.boardSizeTrackBar.TabIndex = 11;
             this.boardSizeTrackBar.TabStop = false;
@@ -230,7 +230,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(903, 28);
+            this.btnStart.Location = new System.Drawing.Point(829, 32);
             this.btnStart.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(97, 28);
@@ -241,7 +241,7 @@
             // 
             // txtBoxDraw
             // 
-            this.txtBoxDraw.Location = new System.Drawing.Point(848, 636);
+            this.txtBoxDraw.Location = new System.Drawing.Point(773, 588);
             this.txtBoxDraw.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtBoxDraw.Name = "txtBoxDraw";
             this.txtBoxDraw.ReadOnly = true;
@@ -251,7 +251,7 @@
             // lblDraw
             // 
             this.lblDraw.AutoSize = true;
-            this.lblDraw.Location = new System.Drawing.Point(845, 616);
+            this.lblDraw.Location = new System.Drawing.Point(770, 568);
             this.lblDraw.Name = "lblDraw";
             this.lblDraw.Size = new System.Drawing.Size(38, 16);
             this.lblDraw.TabIndex = 20;
@@ -259,7 +259,7 @@
             // 
             // txtBoxO
             // 
-            this.txtBoxO.Location = new System.Drawing.Point(927, 636);
+            this.txtBoxO.Location = new System.Drawing.Point(852, 588);
             this.txtBoxO.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtBoxO.Name = "txtBoxO";
             this.txtBoxO.ReadOnly = true;
@@ -268,7 +268,7 @@
             // 
             // txtBoxX
             // 
-            this.txtBoxX.Location = new System.Drawing.Point(761, 636);
+            this.txtBoxX.Location = new System.Drawing.Point(686, 588);
             this.txtBoxX.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtBoxX.Name = "txtBoxX";
             this.txtBoxX.ReadOnly = true;
@@ -278,7 +278,7 @@
             // lblO
             // 
             this.lblO.AutoSize = true;
-            this.lblO.Location = new System.Drawing.Point(924, 616);
+            this.lblO.Location = new System.Drawing.Point(849, 568);
             this.lblO.Name = "lblO";
             this.lblO.Size = new System.Drawing.Size(47, 16);
             this.lblO.TabIndex = 17;
@@ -287,7 +287,7 @@
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(757, 616);
+            this.lblX.Location = new System.Drawing.Point(682, 568);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(45, 16);
             this.lblX.TabIndex = 16;
@@ -304,7 +304,7 @@
             this.dataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGrid.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.dataGrid.Location = new System.Drawing.Point(734, 83);
+            this.dataGrid.Location = new System.Drawing.Point(660, 83);
             this.dataGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dataGrid.MultiSelect = false;
             this.dataGrid.Name = "dataGrid";
@@ -314,7 +314,7 @@
             this.dataGrid.ShowCellToolTips = false;
             this.dataGrid.ShowEditingIcon = false;
             this.dataGrid.ShowRowErrors = false;
-            this.dataGrid.Size = new System.Drawing.Size(266, 521);
+            this.dataGrid.Size = new System.Drawing.Size(266, 465);
             this.dataGrid.TabIndex = 22;
             this.dataGrid.TabStop = false;
             // 
@@ -322,7 +322,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 676);
+            this.ClientSize = new System.Drawing.Size(939, 625);
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.txtBoxDraw);
             this.Controls.Add(this.lblDraw);

@@ -31,7 +31,7 @@ namespace TicTacToeUi
         private IDeSerializeData deserializeData;
         private IIniParseData iniParseData;
         private SavedGameState savedGameState;
-        private Mapper mapper = new Mapper();
+        private BoardDataMapper mapper = new BoardDataMapper();
         private Int32 countX;
         private Int32 countO;
         private Int32 countDraw;
@@ -606,7 +606,7 @@ namespace TicTacToeUi
         private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
         {
             //DataBaseWriter dataBaseWrite = new DataBaseWriter();
-            this.mapper = new Mapper();
+            this.mapper = new BoardDataMapper();
             this.savedGameState = new SavedGameState
             {
                 BoardSize = this.matrixAlgorithm.BoardSize,
