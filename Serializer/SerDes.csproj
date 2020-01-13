@@ -58,7 +58,7 @@
     <Compile Include="Internals\DeSerializeData.cs" />
     <Compile Include="Internals\IniParseData.cs" />
     <Compile Include="Internals\SerializeData.cs" />
-    <Compile Include="Mapper\Mapper.cs" />
+    <Compile Include="Mapper\BoardDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

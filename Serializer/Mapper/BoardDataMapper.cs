@@ -5,7 +5,7 @@ using TicTacToeMatch.Interfaces;
 
 namespace Serializer.Mapper
 {
-    public class Mapper
+    public class BoardDataMapper
     {
         public String WriteCurrentBoardToString(IMatrixAlgorithm matrixAlgorithm)
         {
@@ -14,16 +14,16 @@ namespace Serializer.Mapper
                 throw new ArgumentNullException(nameof(matrixAlgorithm));
             }
 
-            StringBuilder stringBuilder = new StringBuilder(String.Empty);
+            StringBuilder stringBuilder = new StringBuilder();
             for (Int32 x = 0; x < matrixAlgorithm.Board.GetLength(0); x++)
             {
                 stringBuilder.Append(",{");
                 for (Int32 y = 0; y < matrixAlgorithm.Board.GetLength(1); y++)
                 {
-                    stringBuilder.Append($"{matrixAlgorithm.Board[x, y]},");
+                    stringBuilder.AppendFormat("{0},", matrixAlgorithm.Board[x, y]);
                 }
 
-                stringBuilder.Append("}");
+                stringBuilder.Append('}');
             }
             stringBuilder.Replace(",}", "}").Remove(0, 1);
 
