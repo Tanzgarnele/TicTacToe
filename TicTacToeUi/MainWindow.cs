@@ -1,4 +1,5 @@
 ﻿using DataBaseManager.Entities;
+using DataBaseManager.Interface;
 using DataBaseManager.Internal;
 using Serializer.Enteties;
 using Serializer.Factory;
@@ -28,19 +29,24 @@ namespace TicTacToeUi
         private ISerializeData serialize;
         private IDeSerializeData deserializeData;
         private IIniParseData iniParseData;
+        private IDataBaseConnection dataBaseConnection;
+        private IDataBaseWriter dataBaseWriter;
         private SavedGameState savedGameState;
         private Mapper mapper = new Mapper();
         private Int32 countX;
         private Int32 countO;
         private Int32 countDraw;
 
-        public MainWindow(IMatrixAlgorithm matrixAlgorithm, IAiMove aiMove, ISerializeData serialize, IDeSerializeData deserializeData, IIniParseData iniParseData)
+        public MainWindow(IMatrixAlgorithm matrixAlgorithm, IAiMove aiMove, ISerializeData serialize, 
+            IDeSerializeData deserializeData, IIniParseData iniParseData, IDataBaseConnection dataBaseConnection, IDataBaseWriter dataBaseWriter)
         {
             this.matrixAlgorithm = matrixAlgorithm ?? throw new ArgumentNullException(nameof(matrixAlgorithm));
             this.aiMove = aiMove ?? throw new ArgumentNullException(nameof(aiMove));
             this.serialize = serialize ?? throw new ArgumentNullException(nameof(serialize));
             this.deserializeData = deserializeData ?? throw new ArgumentNullException(nameof(deserializeData));
             this.iniParseData = iniParseData ?? throw new ArgumentNullException(nameof(iniParseData));
+            this.dataBaseConnection = dataBaseConnection ?? throw new ArgumentNullException(nameof(dataBaseConnection));
+            this.dataBaseWriter = dataBaseWriter ?? throw new ArgumentNullException(nameof(dataBaseWriter));
             this.settings = new Settings
             {
                 HistoryList = new List<History>()
@@ -65,7 +71,7 @@ namespace TicTacToeUi
         {
             if (this.matrixAlgorithm != null)
             {
-                this.matrixAlgorithm.EndGame -= this.TicTacToeMatrix_EndGame;
+                this.matrixAlgorithm.GameEnd -= this.TicTacToeGameEnd;
                 this.matrixAlgorithm = null;
             }
 
@@ -73,10 +79,10 @@ namespace TicTacToeUi
             this.SetupBoard(this.boardSizeTrackBar.Value);
         }
 
-        public void SetupBoard(Int32 dimension)
+        private void SetupBoard(Int32 dimension)
         {
             this.matrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
-            this.matrixAlgorithm.EndGame += this.TicTacToeMatrix_EndGame;
+            this.matrixAlgorithm.GameEnd += this.TicTacToeGameEnd;
             this.gamePanel.Difficulty = this.ChooseDifficulty();
 
             if (dimension < 2)
@@ -119,7 +125,7 @@ namespace TicTacToeUi
             this.ShowStats();
         }
 
-        public void ShowStats()
+        private void ShowStats()
         {
             this.countDraw = 0;
             this.countO = 0;
@@ -144,7 +150,7 @@ namespace TicTacToeUi
             this.txtBoxDraw.Text = this.countDraw.ToString();
         }
 
-        public Difficulty ChooseDifficulty()
+        private Difficulty ChooseDifficulty()
         {
             if (this.radioBtnEasy.Checked)
             {
@@ -284,7 +290,7 @@ namespace TicTacToeUi
             }
         }
 
-        public void PlayAiEasyMode()
+        private void PlayAiEasyMode()
         {
             if (this.gamePanel.ButtonList.Count > 0)
             {
@@ -305,7 +311,7 @@ namespace TicTacToeUi
 
         #region Events
 
-        private void TicTacToeMatrix_EndGame(Object sender, WinnerMessageEventArgs e)
+        private void TicTacToeGameEnd(Object sender, WinnerMessageEventArgs e)
         {
             MessageBox.Show(e.Message);
 
@@ -329,7 +335,7 @@ namespace TicTacToeUi
                 return;
             }
 
-            DataBaseWriter dataBaseWriter = new DataBaseWriter();
+            //DataBaseWriter dataBaseWriter = new DataBaseWriter();
             this.savedGameState = new SavedGameState
             {
                 BoardSize = this.matrixAlgorithm.BoardSize,
@@ -479,10 +485,10 @@ namespace TicTacToeUi
             this.RecoverBoard(data.Difficulty);
         }
 
-        public void RecoverBoard(Difficulty difficulty)
+        private void RecoverBoard(Difficulty difficulty)
         {
             this.UpdateMatrixAlgorithm();
-            this.matrixAlgorithm.EndGame += this.TicTacToeMatrix_EndGame;
+            this.matrixAlgorithm.GameEnd += this.TicTacToeGameEnd;
             this.gamePanel.Difficulty = difficulty;
 
             this.mainTableLayloutPanel.Controls.Clear();
@@ -524,7 +530,7 @@ namespace TicTacToeUi
 
         private void UpdateMatrixAlgorithm()
         {
-            this.matrixAlgorithm.EndGame -= this.TicTacToeMatrix_EndGame;
+            this.matrixAlgorithm.GameEnd -= this.TicTacToeGameEnd;
             this.matrixAlgorithm.Board = this.mapper.WriteCurrentStringToBoard(this.savedGameState.BoardData, this.matrixAlgorithm);
             this.matrixAlgorithm.BoardSize = this.savedGameState.BoardSize;
             this.matrixAlgorithm.CurrentTurn = this.savedGameState.CurrentTurn;
@@ -563,7 +569,7 @@ namespace TicTacToeUi
 
         private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
         {
-            DataBaseWriter dataBaseWrite = new DataBaseWriter();
+            //DataBaseWriter dataBaseWrite = new DataBaseWriter();
             this.mapper = new Mapper();
             this.savedGameState = new SavedGameState
             {
@@ -583,7 +589,7 @@ namespace TicTacToeUi
             {
                 HistoryList = this.settings.HistoryList,
             };
-            dataBaseWrite.WriteDatabaseFile(historyData);
+            dataBaseWriter.WriteDatabaseFile(historyData);
             this.serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
             this.serialize.SerializeJson(Application.StartupPath + "/settings/autosave.json", data);
             this.serialize.SerializeXml(Application.StartupPath + "/settings/autosave.xml", data);

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Xml.Serialization;
+﻿using System;
 using TicTacToeMatch.Definitions;
 using TicTacToeMatch.Entities;
 using TicTacToeMatch.Events;
@@ -10,7 +8,7 @@ namespace TicTacToeMatch.Internal
 {
     internal class MatrixAlgorithm : IMatrixAlgorithm
     {
-        public event EventHandler<WinnerMessageEventArgs> EndGame;
+        public event EventHandler<WinnerMessageEventArgs> GameEnd;
 
         public Int32 CurrentTurnCount { get; set; } = 0;
 
@@ -18,7 +16,6 @@ namespace TicTacToeMatch.Internal
 
         public PlayerType CurrentTurn { get; set; } = PlayerType.X;
 
-        [XmlIgnore]
         public PlayerType[,] Board { get; set; }
 
         public Boolean WinnerState { get; set; } = false;
@@ -109,11 +106,11 @@ namespace TicTacToeMatch.Internal
         {
             if (this.CurrentTurnCount == this.BoardSize * this.BoardSize)
             {
-                this.EndGame?.Invoke(this, new WinnerMessageEventArgs("Draw", "Draw"));
+                this.GameEnd?.Invoke(this, new WinnerMessageEventArgs("Draw", "Draw"));
             }
             else
             {
-                this.EndGame?.Invoke(this, new WinnerMessageEventArgs((check.ToString() + " Wins"), this.CurrentTurn.ToString()));
+                this.GameEnd?.Invoke(this, new WinnerMessageEventArgs((check.ToString() + " Wins"), this.CurrentTurn.ToString()));
             }
         }
 

@@ -362,10 +362,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel mainTableLayloutPanel;
         private System.Windows.Forms.GroupBox groupBoxUtility;
-        public System.Windows.Forms.Button btnSave;
-        public System.Windows.Forms.Button btnNew;
-        public System.Windows.Forms.Button btnHistory;
-        public System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.Button btnHistory;
+        private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.GroupBox groupBoxDiff;
         private System.Windows.Forms.RadioButton radioBtn1vs1;
         private System.Windows.Forms.RadioButton radioBtnHard;
@@ -373,7 +373,7 @@
         private System.Windows.Forms.RadioButton radioBtnEasy;
         private System.Windows.Forms.TextBox txtBoxTrackBar;
         private System.Windows.Forms.TrackBar boardSizeTrackBar;
-        public System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.TextBox txtBoxDraw;
         private System.Windows.Forms.Label lblDraw;
         private System.Windows.Forms.TextBox txtBoxO;

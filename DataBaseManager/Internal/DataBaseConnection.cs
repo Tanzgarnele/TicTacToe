@@ -7,10 +7,9 @@ using System.Reflection;
 
 namespace DataBaseManager.Internal
 {
-    public class DataBaseConnection : IDataBaseConnection
+    internal class DataBaseConnection : IDataBaseConnection
     {
         private static readonly String directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\settings\\autosave.db";
-        private static DataBaseConnection _Connection;
         private readonly SQLiteConnection connection = new SQLiteConnection($"data source={directory}; Version=3;");
         private readonly SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter();
 
@@ -32,16 +31,6 @@ namespace DataBaseManager.Internal
             createTableCommand.Dispose();
 
             newConnection.Close();
-        }
-
-        public static DataBaseConnection Connection()
-        {
-            if (_Connection == null)
-            {
-                _Connection = new DataBaseConnection();
-            }
-
-            return _Connection;
         }
 
         public void OpenDataBaseConnection()

@@ -1,4 +1,6 @@
-﻿using Serializer.Factory;
+﻿using DataBaseManager.Factory;
+using DataBaseManager.Interface;
+using Serializer.Factory;
 using Serializer.Interface;
 using System;
 using System.Windows.Forms;
@@ -17,10 +19,12 @@ namespace TicTacToeUi
             ISerializeData serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
             IDeSerializeData deserialize = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
             IIniParseData iniParser = (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
+            IDataBaseWriter dataBaseWriter = (IDataBaseWriter)DataBaseManagerFactory.Create(typeof(IDataBaseWriter));
+            IDataBaseConnection dataBaseConnection = (IDataBaseConnection)DataBaseManagerFactory.Create(typeof(IDataBaseConnection));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow(ticTacToeMatrix, aiMoves, serialize, deserialize, iniParser));
+            Application.Run(new MainWindow(ticTacToeMatrix, aiMoves, serialize, deserialize, iniParser, dataBaseConnection, dataBaseWriter));
         }
     }
 }

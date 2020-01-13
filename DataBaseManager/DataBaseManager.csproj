@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\HistoryData.cs" />
+    <Compile Include="Factory\DataBaseManagerFactory.cs" />
     <Compile Include="Interface\IDataBaseConnection.cs" />
     <Compile Include="Interface\IDataBaseWriter.cs" />
     <Compile Include="Internal\DataBaseConnection.cs" />

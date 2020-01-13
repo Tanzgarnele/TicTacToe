@@ -12,5 +12,7 @@ namespace DataBaseManager.Interface
         DataTable GetData(String query);
 
         void ModifyData(String query);
+
+        void CreateDataBase();
     }
 }

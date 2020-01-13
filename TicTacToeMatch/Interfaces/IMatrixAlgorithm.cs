@@ -7,7 +7,7 @@ namespace TicTacToeMatch.Interfaces
 {
     public interface IMatrixAlgorithm
     {
-        event EventHandler<WinnerMessageEventArgs> EndGame;
+        event EventHandler<WinnerMessageEventArgs> GameEnd;
 
         Int32 CurrentTurnCount { get; set; }
 

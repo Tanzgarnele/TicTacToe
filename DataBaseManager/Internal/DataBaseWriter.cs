@@ -1,4 +1,5 @@
 ﻿using DataBaseManager.Entities;
+using DataBaseManager.Factory;
 using DataBaseManager.Interface;
 using System;
 using System.Diagnostics;
@@ -7,10 +8,9 @@ using System.Reflection;
 
 namespace DataBaseManager.Internal
 {
-    public class DataBaseWriter : IDataBaseWriter
+    internal class DataBaseWriter : IDataBaseWriter
     {
-        private readonly DataBaseConnection dataBaseConnection = DataBaseConnection.Connection();
-
+        readonly IDataBaseConnection dataBaseConnection = (IDataBaseConnection)DataBaseManagerFactory.Create(typeof(IDataBaseConnection));
         private static readonly String directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\settings\\autosave.db";
 
         public void WriteDatabaseFile(HistoryData historyData)
