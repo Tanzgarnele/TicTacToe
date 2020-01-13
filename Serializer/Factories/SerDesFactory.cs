@@ -1,6 +1,5 @@
 ﻿using Serializer.Interfaces;
 using Serializer.Internals;
-using Serializer.Internals;
 using System;
 
 namespace Serializer.Factories
@@ -23,8 +22,6 @@ namespace Serializer.Factories
             {
                 return new DeSerializer();
             }
-
-            // TODO: für jedes weiter Interface (plus Impl.) ein neues IF analog zu oben!!!
 
             throw new NotSupportedException();
         }

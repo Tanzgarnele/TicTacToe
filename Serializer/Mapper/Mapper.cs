@@ -7,9 +7,13 @@ namespace Serializer.Mapper
 {
     public class Mapper
     {
-
         public String WriteCurrentBoardToString(IMatrixAlgorithm matrixAlgorithm)
         {
+            if (matrixAlgorithm is null)
+            {
+                throw new ArgumentNullException(nameof(matrixAlgorithm));
+            }
+
             StringBuilder stringBuilder = new StringBuilder(String.Empty);
             for (Int32 x = 0; x < matrixAlgorithm.Board.GetLength(0); x++)
             {
@@ -28,6 +32,16 @@ namespace Serializer.Mapper
 
         public PlayerType[,] WriteCurrentStringToBoard(String BoardData, IMatrixAlgorithm matrixAlgorithm)
         {
+            if (String.IsNullOrWhiteSpace(BoardData))
+            {
+                throw new ArgumentOutOfRangeException(nameof(BoardData), "Board data may not be empty, null or whitespace");
+            }
+
+            if (matrixAlgorithm is null)
+            {
+                throw new ArgumentNullException(nameof(matrixAlgorithm));
+            }
+
             for (Int32 board = 0; board < matrixAlgorithm.BoardSize* matrixAlgorithm.BoardSize ; board++)
             {
                 BoardData = BoardData.Replace("}", String.Empty);

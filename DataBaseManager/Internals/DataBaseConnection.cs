@@ -50,6 +50,11 @@ namespace DataBaseManager.Internals
 
         public DataTable GetData(String query)
         {
+            if (String.IsNullOrWhiteSpace(query))
+            {
+                throw new ArgumentOutOfRangeException(nameof(query), "query may not be null, empty or whitespace");
+            }
+
             DataTable dt = new DataTable();
             SQLiteCommand cmd = new SQLiteCommand(query, this.connection)
             {
@@ -64,6 +69,11 @@ namespace DataBaseManager.Internals
 
         public void ModifyData(String query)
         {
+            if (String.IsNullOrWhiteSpace(query))
+            {
+                throw new ArgumentOutOfRangeException(nameof(query), "query may not be null, empty or whitespace");
+            }
+
             SQLiteCommand cmd = new SQLiteCommand
             {
                 Connection = connection,

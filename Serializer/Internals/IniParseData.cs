@@ -23,7 +23,7 @@ namespace Serializer.Internals
                 throw new ArgumentOutOfRangeException(nameof(fileName), "Could not read Filepath");
             }
 
-            if (data == null)
+            if (data is null)
             {
                 throw new ArgumentOutOfRangeException(nameof(data));
             }
@@ -50,6 +50,10 @@ namespace Serializer.Internals
 
         public Data ReadIni(String fileName)
         {
+            if (String.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ArgumentOutOfRangeException(nameof(fileName), "file name may not be empty, null or whitespace");
+            }
 
 
             this.MatrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));

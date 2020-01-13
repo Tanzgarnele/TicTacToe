@@ -82,11 +82,10 @@ namespace TicTacToeUi
             {
                 throw new ArgumentOutOfRangeException(nameof(dimension));
             }
-            
+
             this.matrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
             this.matrixAlgorithm.GameEnd += this.TicTacToeGameEnd;
             this.gamePanel.Difficulty = this.ChooseDifficulty();
-
 
             this.mainTableLayloutPanel.Controls.Clear();
 
@@ -311,7 +310,7 @@ namespace TicTacToeUi
 
         private void TicTacToeGameEnd(Object sender, WinnerMessageEventArgs e)
         {
-            if (e == null)
+            if (e is null)
             {
                 throw new ArgumentNullException(nameof(e));
             }
@@ -338,7 +337,6 @@ namespace TicTacToeUi
                 return;
             }
 
-            //DataBaseWriter dataBaseWriter = new DataBaseWriter();
             this.savedGameState = new SavedGameState
             {
                 BoardSize = this.matrixAlgorithm.BoardSize,
@@ -402,35 +400,13 @@ namespace TicTacToeUi
                 this.iniParseData = (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
                 this.deserializeData = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
 
-                //try
-                //{
-                //    Data data = this.deserializeData.DeserializeJson(loadFileDialog.FileName);
-
-                //    if (data is null)
-                //    {
-                //        return;
-                //    }
-
-
-                //    //data.CurrentGame => nix
-
-                //}
-                //catch (ArgumentOutOfRangeException arg)
-                //{
-                //    MessageBox.Show("Ein Fehler " + arg.Message);
-                //    return;
-                //}
-
-
-
-
                 if (loadFileDialog.FileName.EndsWith(".json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Data data = this.deserializeData.DeserializeJson(loadFileDialog.FileName);
                     this.RecoverData(data);
                     MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
                 }
-                else if (loadFileDialog.FileName.Contains(".xml"))
+                else if (loadFileDialog.FileName.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Data data = this.deserializeData.DeserializeXml(loadFileDialog.FileName);
                     this.settings.XmlIsUsed = true;
@@ -499,7 +475,7 @@ namespace TicTacToeUi
 
         private void RecoverData(Data data)
         {
-            if (data == null)
+            if (data is null)
             {
                 throw new ArgumentNullException(nameof(data));
             }
@@ -569,7 +545,7 @@ namespace TicTacToeUi
 
         private void RecoverDifficulty(Data data)
         {
-            if (data == null)
+            if (data is null)
             {
                 throw new ArgumentNullException(nameof(data));
             }
@@ -604,7 +580,6 @@ namespace TicTacToeUi
 
         private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
         {
-            //DataBaseWriter dataBaseWrite = new DataBaseWriter();
             this.mapper = new Mapper();
             this.savedGameState = new SavedGameState
             {
@@ -624,7 +599,7 @@ namespace TicTacToeUi
             {
                 HistoryList = this.settings.HistoryList,
             };
-            dataBaseWriter.WriteDatabaseFile(historyData);
+            this.dataBaseWriter.WriteDatabaseFile(historyData);
             this.serialize = (ISerializeData)SerDesFactory.Create(typeof(ISerializeData));
             this.serialize.SerializeJson(Application.StartupPath + "/settings/autosave.json", data);
             this.serialize.SerializeXml(Application.StartupPath + "/settings/autosave.xml", data);

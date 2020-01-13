@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicTacToeMatch.Definitions
+﻿namespace TicTacToeMatch.Definitions
 {
     public enum PlayerType
     {

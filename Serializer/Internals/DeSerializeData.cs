@@ -3,7 +3,6 @@ using Serializer.Enteties;
 using Serializer.Interfaces;
 using System;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace Serializer.Internals
