@@ -1,16 +1,16 @@
 ﻿using IniParser;
 using IniParser.Model;
 using Serializer.Enteties;
-using Serializer.Interface;
+using Serializer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using TicTacToeMatch.Definitions;
 using TicTacToeMatch.Entities;
-using TicTacToeMatch.Factory;
+using TicTacToeMatch.Factories;
 using TicTacToeMatch.Interfaces;
 
-namespace Serializer.Internal
+namespace Serializer.Internals
 {
     internal class IniParseData : IIniParseData
     {
@@ -18,6 +18,16 @@ namespace Serializer.Internal
 
         public void WriteToIni(String fileName, Data data)
         {
+            if (String.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ArgumentOutOfRangeException(nameof(fileName), "Could not read Filepath");
+            }
+
+            if (data == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(data));
+            }
+
             FileIniDataParser parser = new FileIniDataParser();
             IniData iniData = new IniData();
 
@@ -40,6 +50,8 @@ namespace Serializer.Internal
 
         public Data ReadIni(String fileName)
         {
+
+
             this.MatrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
             FileIniDataParser parser = new FileIniDataParser();
             IniData iniData = parser.ReadFile(fileName);

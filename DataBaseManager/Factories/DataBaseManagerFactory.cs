@@ -1,12 +1,8 @@
-﻿using DataBaseManager.Interface;
-using DataBaseManager.Internal;
+﻿using DataBaseManager.Interfaces;
+using DataBaseManager.Internals;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataBaseManager.Factory
+namespace DataBaseManager.Factories
 {
     public static class DataBaseManagerFactory
     {
@@ -21,8 +17,6 @@ namespace DataBaseManager.Factory
             {
                 return new DataBaseWriter();
             }
-
-            // TODO: für jedes weiter Interface (plus Impl.) ein neues IF analog zu oben!!!
 
             throw new NotSupportedException();
         }

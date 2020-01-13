@@ -1,7 +1,7 @@
 ﻿using Serializer.Enteties;
 using System;
 
-namespace Serializer.Interface
+namespace Serializer.Interfaces
 {
     public interface IIniParseData
     {

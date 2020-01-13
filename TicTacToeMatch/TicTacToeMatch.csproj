@@ -61,11 +61,11 @@
     <Compile Include="Entities\NextMove.cs" />
     <Compile Include="Entities\PointIndex.cs" />
     <Compile Include="Events\WinnerMessageEventArgs.cs" />
-    <Compile Include="Factory\GlobalFactory.cs" />
+    <Compile Include="Factories\GlobalFactory.cs" />
     <Compile Include="Interfaces\IAiMove.cs" />
     <Compile Include="Interfaces\IMatrixAlgorithm.cs" />
-    <Compile Include="Internal\AiMove.cs" />
-    <Compile Include="Internal\MatrixAlgorithm.cs" />
+    <Compile Include="Internals\AiMove.cs" />
+    <Compile Include="Internals\MatrixAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

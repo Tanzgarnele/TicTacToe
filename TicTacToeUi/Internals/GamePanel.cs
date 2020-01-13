@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using TicTacToeMatch.Definitions;
 using TicTacToeUi.Interfaces;
 
-namespace TicTacToeUi.Internal
+namespace TicTacToeUi.Internals
 {
     internal class GamePanel : IGamePanel
     {

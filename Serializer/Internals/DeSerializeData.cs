@@ -1,16 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Serializer.Enteties;
-using Serializer.Interface;
+using Serializer.Interfaces;
 using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
-namespace Serializer.Internal
+namespace Serializer.Internals
 {
     internal class DeSerializer : IDeSerializeData
     {
         public Data DeserializeJson(String filePath)
         {
+            if (String.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentOutOfRangeException(nameof(filePath), "File path may not be null, empty or whitespace");
+            }
+
             using (StreamReader readFile = File.OpenText(filePath))
             {
                 Data readList = JsonConvert.DeserializeObject<Data>(readFile.ReadToEnd());
@@ -21,6 +27,11 @@ namespace Serializer.Internal
 
         public Data DeserializeXml(String filePath)
         {
+            if (String.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentOutOfRangeException(nameof(filePath), "File path may not be null, empty or whitespace");
+            }
+
             using (StreamReader readFile = File.OpenText(filePath))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Data));

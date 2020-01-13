@@ -47,11 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\HistoryData.cs" />
-    <Compile Include="Factory\DataBaseManagerFactory.cs" />
-    <Compile Include="Interface\IDataBaseConnection.cs" />
-    <Compile Include="Interface\IDataBaseWriter.cs" />
-    <Compile Include="Internal\DataBaseConnection.cs" />
-    <Compile Include="Internal\DataBaseWriter.cs" />
+    <Compile Include="Factories\DataBaseManagerFactory.cs" />
+    <Compile Include="Interfaces\IDataBaseConnection.cs" />
+    <Compile Include="Interfaces\IDataBaseWriter.cs" />
+    <Compile Include="Internals\DataBaseConnection.cs" />
+    <Compile Include="Internals\DataBaseWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

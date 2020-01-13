@@ -1,21 +1,17 @@
-﻿using DataBaseManager.Interface;
+﻿using DataBaseManager.Interfaces;
 using System;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
 
-namespace DataBaseManager.Internal
+namespace DataBaseManager.Internals
 {
     internal class DataBaseConnection : IDataBaseConnection
     {
         private static readonly String directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\settings\\autosave.db";
         private readonly SQLiteConnection connection = new SQLiteConnection($"data source={directory}; Version=3;");
         private readonly SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter();
-
-        public DataBaseConnection()
-        {
-        }
 
         public void CreateDataBase()
         {

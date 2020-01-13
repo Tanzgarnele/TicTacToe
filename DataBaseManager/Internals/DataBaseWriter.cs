@@ -1,12 +1,12 @@
 ﻿using DataBaseManager.Entities;
-using DataBaseManager.Factory;
-using DataBaseManager.Interface;
+using DataBaseManager.Factories;
+using DataBaseManager.Interfaces;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace DataBaseManager.Internal
+namespace DataBaseManager.Internals
 {
     internal class DataBaseWriter : IDataBaseWriter
     {
@@ -15,6 +15,11 @@ namespace DataBaseManager.Internal
 
         public void WriteDatabaseFile(HistoryData historyData)
         {
+            if (historyData is null)
+            {
+                throw new ArgumentNullException(nameof(historyData));
+            }
+
             if (!File.Exists(directory))
             {
                 this.dataBaseConnection.CreateDataBase();

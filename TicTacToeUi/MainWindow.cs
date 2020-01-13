@@ -1,9 +1,8 @@
 ﻿using DataBaseManager.Entities;
-using DataBaseManager.Interface;
-using DataBaseManager.Internal;
+using DataBaseManager.Interfaces;
 using Serializer.Enteties;
-using Serializer.Factory;
-using Serializer.Interface;
+using Serializer.Factories;
+using Serializer.Interfaces;
 using Serializer.Mapper;
 using System;
 using System.Collections.Generic;
@@ -13,10 +12,10 @@ using System.Windows.Forms;
 using TicTacToeMatch.Definitions;
 using TicTacToeMatch.Entities;
 using TicTacToeMatch.Events;
-using TicTacToeMatch.Factory;
+using TicTacToeMatch.Factories;
 using TicTacToeMatch.Interfaces;
 using TicTacToeUi.Interfaces;
-using TicTacToeUi.Internal;
+using TicTacToeUi.Internals;
 
 namespace TicTacToeUi
 {
@@ -25,27 +24,25 @@ namespace TicTacToeUi
         private IMatrixAlgorithm matrixAlgorithm;
         private readonly ISettings settings;
         private readonly IGamePanel gamePanel;
+        private readonly IDataBaseWriter dataBaseWriter;
         private IAiMove aiMove;
         private ISerializeData serialize;
         private IDeSerializeData deserializeData;
         private IIniParseData iniParseData;
-        private IDataBaseConnection dataBaseConnection;
-        private IDataBaseWriter dataBaseWriter;
         private SavedGameState savedGameState;
         private Mapper mapper = new Mapper();
         private Int32 countX;
         private Int32 countO;
         private Int32 countDraw;
 
-        public MainWindow(IMatrixAlgorithm matrixAlgorithm, IAiMove aiMove, ISerializeData serialize, 
-            IDeSerializeData deserializeData, IIniParseData iniParseData, IDataBaseConnection dataBaseConnection, IDataBaseWriter dataBaseWriter)
+        public MainWindow(IMatrixAlgorithm matrixAlgorithm, IAiMove aiMove, ISerializeData serialize,
+            IDeSerializeData deserializeData, IIniParseData iniParseData, IDataBaseWriter dataBaseWriter)
         {
             this.matrixAlgorithm = matrixAlgorithm ?? throw new ArgumentNullException(nameof(matrixAlgorithm));
             this.aiMove = aiMove ?? throw new ArgumentNullException(nameof(aiMove));
             this.serialize = serialize ?? throw new ArgumentNullException(nameof(serialize));
             this.deserializeData = deserializeData ?? throw new ArgumentNullException(nameof(deserializeData));
             this.iniParseData = iniParseData ?? throw new ArgumentNullException(nameof(iniParseData));
-            this.dataBaseConnection = dataBaseConnection ?? throw new ArgumentNullException(nameof(dataBaseConnection));
             this.dataBaseWriter = dataBaseWriter ?? throw new ArgumentNullException(nameof(dataBaseWriter));
             this.settings = new Settings
             {
@@ -81,14 +78,15 @@ namespace TicTacToeUi
 
         private void SetupBoard(Int32 dimension)
         {
-            this.matrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
-            this.matrixAlgorithm.GameEnd += this.TicTacToeGameEnd;
-            this.gamePanel.Difficulty = this.ChooseDifficulty();
-
             if (dimension < 2)
             {
                 throw new ArgumentOutOfRangeException(nameof(dimension));
             }
+            
+            this.matrixAlgorithm = (IMatrixAlgorithm)GlobalFactory.Create(typeof(IMatrixAlgorithm));
+            this.matrixAlgorithm.GameEnd += this.TicTacToeGameEnd;
+            this.gamePanel.Difficulty = this.ChooseDifficulty();
+
 
             this.mainTableLayloutPanel.Controls.Clear();
 
@@ -313,6 +311,11 @@ namespace TicTacToeUi
 
         private void TicTacToeGameEnd(Object sender, WinnerMessageEventArgs e)
         {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             MessageBox.Show(e.Message);
 
             this.settings.HistoryList.Add(new History()
@@ -357,7 +360,7 @@ namespace TicTacToeUi
 
             if (this.settings.HistoryList.Count >= 1)
             {
-                dataBaseWriter.WriteDatabaseFile(historyData);
+                this.dataBaseWriter.WriteDatabaseFile(historyData);
             }
 
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -399,7 +402,29 @@ namespace TicTacToeUi
                 this.iniParseData = (IIniParseData)SerDesFactory.Create(typeof(IIniParseData));
                 this.deserializeData = (IDeSerializeData)SerDesFactory.Create(typeof(IDeSerializeData));
 
-                if (loadFileDialog.FileName.Contains(".json"))
+                //try
+                //{
+                //    Data data = this.deserializeData.DeserializeJson(loadFileDialog.FileName);
+
+                //    if (data is null)
+                //    {
+                //        return;
+                //    }
+
+
+                //    //data.CurrentGame => nix
+
+                //}
+                //catch (ArgumentOutOfRangeException arg)
+                //{
+                //    MessageBox.Show("Ein Fehler " + arg.Message);
+                //    return;
+                //}
+
+
+
+
+                if (loadFileDialog.FileName.EndsWith(".json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Data data = this.deserializeData.DeserializeJson(loadFileDialog.FileName);
                     this.RecoverData(data);
@@ -413,7 +438,7 @@ namespace TicTacToeUi
                     this.settings.XmlIsUsed = false;
                     MessageBox.Show(Path.GetFileName(loadFileDialog.FileName) + " sucessfully loaded!");
                 }
-                else if (loadFileDialog.FileName.EndsWith(".ini"))
+                else if (loadFileDialog.FileName.EndsWith(".ini", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Data data = this.iniParseData.ReadIni(loadFileDialog.FileName);
                     this.RecoverData(data);
@@ -474,6 +499,11 @@ namespace TicTacToeUi
 
         private void RecoverData(Data data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
             this.boardSizeTrackBar.Value = data.CurrentGame.BoardSize;
             this.settings.HistoryList = data.HistoryList;
             this.dataGrid.DataSource = this.settings.HistoryList;
@@ -539,6 +569,11 @@ namespace TicTacToeUi
 
         private void RecoverDifficulty(Data data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
             this.radioBtnEasy.Checked = false;
             this.radioBtnMedium.Checked = false;
             this.radioBtnHard.Checked = false;

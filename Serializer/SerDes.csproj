@@ -54,13 +54,13 @@
   <ItemGroup>
     <Compile Include="Entities\Data.cs" />
     <Compile Include="Entities\SavedGameState.cs" />
-    <Compile Include="Factory\SerDesFactory.cs" />
-    <Compile Include="Interface\IIniParseData.cs" />
-    <Compile Include="Interface\IDeSerializeData.cs" />
-    <Compile Include="Interface\ISerializeData.cs" />
-    <Compile Include="Internal\DeSerializeData.cs" />
-    <Compile Include="Internal\IniParseData.cs" />
-    <Compile Include="Internal\SerializeData.cs" />
+    <Compile Include="Factories\SerDesFactory.cs" />
+    <Compile Include="Interfaces\IDeSerializeData.cs" />
+    <Compile Include="Interfaces\IIniParseData.cs" />
+    <Compile Include="Interfaces\ISerializeData.cs" />
+    <Compile Include="Internals\DeSerializeData.cs" />
+    <Compile Include="Internals\IniParseData.cs" />
+    <Compile Include="Internals\SerializeData.cs" />
     <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

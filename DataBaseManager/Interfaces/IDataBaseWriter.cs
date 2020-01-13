@@ -1,6 +1,6 @@
 ﻿using DataBaseManager.Entities;
 
-namespace DataBaseManager.Interface
+namespace DataBaseManager.Interfaces
 {
     public interface IDataBaseWriter
     {

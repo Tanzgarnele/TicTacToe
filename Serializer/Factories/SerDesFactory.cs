@@ -1,8 +1,9 @@
-﻿using Serializer.Interface;
-using Serializer.Internal;
+﻿using Serializer.Interfaces;
+using Serializer.Internals;
+using Serializer.Internals;
 using System;
 
-namespace Serializer.Factory
+namespace Serializer.Factories
 {
     public static class SerDesFactory
     {

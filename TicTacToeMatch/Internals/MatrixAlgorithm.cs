@@ -4,7 +4,7 @@ using TicTacToeMatch.Entities;
 using TicTacToeMatch.Events;
 using TicTacToeMatch.Interfaces;
 
-namespace TicTacToeMatch.Internal
+namespace TicTacToeMatch.Internals
 {
     internal class MatrixAlgorithm : IMatrixAlgorithm
     {
@@ -22,6 +22,11 @@ namespace TicTacToeMatch.Internal
 
         public Boolean CheckWinner(PointIndex point, PlayerType state)
         {
+            if (point == null)
+            {
+                throw new ArgumentNullException(nameof(point));
+            }
+
             for (Int32 x = 0; x < this.BoardSize; x++)
             {
                 if (this.Board[x, point.Y] != state)
@@ -96,6 +101,11 @@ namespace TicTacToeMatch.Internal
 
         public void InitializeBoard(Int32 dimension)
         {
+            if (dimension < 2)
+            {
+                throw new ArgumentOutOfRangeException(nameof(dimension));
+            }
+
             this.Board = new PlayerType[dimension, dimension];
             this.BoardSize = dimension;
         }

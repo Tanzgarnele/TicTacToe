@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace DataBaseManager.Interface
+namespace DataBaseManager.Interfaces
 {
     public interface IDataBaseConnection
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using TicTacToeMatch.Interfaces;
-using TicTacToeMatch.Internal;
+using TicTacToeMatch.Internals;
 
-namespace TicTacToeMatch.Factory
+namespace TicTacToeMatch.Factories
 {
     public static class GlobalFactory
     {

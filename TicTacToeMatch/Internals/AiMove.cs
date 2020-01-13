@@ -5,7 +5,7 @@ using TicTacToeMatch.Definitions;
 using TicTacToeMatch.Entities;
 using TicTacToeMatch.Interfaces;
 
-namespace TicTacToeMatch.Internal
+namespace TicTacToeMatch.Internals
 {
     internal class AiMove : IAiMove
     {
@@ -21,6 +21,10 @@ namespace TicTacToeMatch.Internal
 
         public Int32 GetAiEasyPointIndex(List<Button> buttonList)
         {
+            if (buttonList is null || buttonList.Count < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(buttonList));
+            }
             this.Rand = new Random();
             return this.Rand.Next(buttonList.Count);
         }
@@ -29,6 +33,11 @@ namespace TicTacToeMatch.Internal
 
         public Boolean GetMovesLeft(IMatrixAlgorithm ticTacToeMatrix)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             for (Int32 x = 0; x < ticTacToeMatrix.BoardSize; x++)
             {
                 for (Int32 y = 0; y < ticTacToeMatrix.BoardSize; y++)
@@ -44,6 +53,11 @@ namespace TicTacToeMatch.Internal
 
         public Int32 GetMiniMaxMedium(IMatrixAlgorithm ticTacToeMatrix, Int32 depth, Boolean isMax)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             Int32 score = this.EvaluateAiMediumMoves(ticTacToeMatrix.Board) - depth;
 
             if (score == 10)
@@ -106,6 +120,11 @@ namespace TicTacToeMatch.Internal
 
         public Move GetBestAiMoveMedium(IMatrixAlgorithm ticTacToeMatrix)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             Move bestMove = new Move
             {
                 Row = -1,
@@ -140,6 +159,11 @@ namespace TicTacToeMatch.Internal
 
         public PointIndex GetAiMediumPointIndex(IMatrixAlgorithm ticTacToeMatrix)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             Move bestMove = this.GetBestAiMoveMedium(ticTacToeMatrix);
 
             PointIndex point = new PointIndex
@@ -222,6 +246,11 @@ namespace TicTacToeMatch.Internal
 
         public Boolean GetMovesLeftAiHard(IMatrixAlgorithm ticTacToeMatrix, PlayerType[,] newBoard)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             for (Int32 x = 0; x < ticTacToeMatrix.BoardSize; x++)
             {
                 for (Int32 y = 0; y < ticTacToeMatrix.BoardSize; y++)
@@ -237,6 +266,11 @@ namespace TicTacToeMatch.Internal
 
         public Int32 GetMiniMaxAiHard(PlayerType[,] newBoard, PlayerType state, IMatrixAlgorithm ticTacToeMatrix)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             this.FunctionCalls++;
 
             if (this.EvaluateAiHardMode(newBoard, PlayerType.X))
@@ -330,6 +364,11 @@ namespace TicTacToeMatch.Internal
 
         public PointIndex GetAiHardPointIndex(IMatrixAlgorithm ticTacToeMatrix)
         {
+            if (ticTacToeMatrix is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
             this.GetMiniMaxAiHard(ticTacToeMatrix.Board, PlayerType.O, ticTacToeMatrix);
             return this.BestPointMove;
         }
