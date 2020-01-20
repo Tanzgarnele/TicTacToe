@@ -101,7 +101,7 @@ namespace TicTacToeMatch.Internals
 
         public void InitializeBoard(Int32 dimension)
         {
-            if (dimension < 2)
+            if (dimension < 3)
             {
                 throw new ArgumentOutOfRangeException(nameof(dimension));
             }

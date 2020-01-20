@@ -58,6 +58,13 @@ namespace TicTacToeMatch.Internals
                 throw new ArgumentNullException(nameof(ticTacToeMatrix));
             }
 
+            if (ticTacToeMatrix.Board is null)
+            {
+                throw new ArgumentNullException(nameof(ticTacToeMatrix));
+            }
+
+
+            // TODO: KEIN PLAYER CHECK!!!!! AI SONST KAPUTT
             Int32 score = this.EvaluateAiMediumMoves(ticTacToeMatrix.Board) - depth;
 
             if (score == 10)
@@ -67,7 +74,7 @@ namespace TicTacToeMatch.Internals
 
             if (score == -10)
             {
-                return depth - score;
+                return score;
             }
 
             if (this.GetMovesLeft(ticTacToeMatrix))
@@ -76,7 +83,7 @@ namespace TicTacToeMatch.Internals
             }
 
             depth += 1;
-            if (isMax)
+            if (!isMax)
             {
                 Int32 best = Int32.MinValue;
 
@@ -86,9 +93,9 @@ namespace TicTacToeMatch.Internals
                     {
                         if (ticTacToeMatrix.Board[x, y] == PlayerType.Unassigned)
                         {
-                            ticTacToeMatrix.Board[x, y] = PlayerType.X;
+                            ticTacToeMatrix.Board[x, y] = PlayerType.O;
 
-                            best = Math.Max(best, this.GetMiniMaxMedium(ticTacToeMatrix, depth, false));
+                            best = Math.Max(best, this.GetMiniMaxMedium(ticTacToeMatrix, depth, true));
 
                             ticTacToeMatrix.Board[x, y] = PlayerType.Unassigned;
                         }
@@ -106,9 +113,9 @@ namespace TicTacToeMatch.Internals
                     {
                         if (ticTacToeMatrix.Board[x, y] == PlayerType.Unassigned)
                         {
-                            ticTacToeMatrix.Board[x, y] = PlayerType.O;
+                            ticTacToeMatrix.Board[x, y] = PlayerType.X;
 
-                            best = Math.Min(best, this.GetMiniMaxMedium(ticTacToeMatrix, depth, true));
+                            best = Math.Min(best, this.GetMiniMaxMedium(ticTacToeMatrix, depth, false));
 
                             ticTacToeMatrix.Board[x, y] = PlayerType.Unassigned;
                         }
@@ -120,11 +127,6 @@ namespace TicTacToeMatch.Internals
 
         public Move GetBestAiMoveMedium(IMatrixAlgorithm ticTacToeMatrix)
         {
-            if (ticTacToeMatrix is null)
-            {
-                throw new ArgumentNullException(nameof(ticTacToeMatrix));
-            }
-
             Move bestMove = new Move
             {
                 Row = -1,
@@ -159,10 +161,6 @@ namespace TicTacToeMatch.Internals
 
         public PointIndex GetAiMediumPointIndex(IMatrixAlgorithm ticTacToeMatrix)
         {
-            if (ticTacToeMatrix is null)
-            {
-                throw new ArgumentNullException(nameof(ticTacToeMatrix));
-            }
 
             Move bestMove = this.GetBestAiMoveMedium(ticTacToeMatrix);
 
@@ -177,6 +175,18 @@ namespace TicTacToeMatch.Internals
 
         public Int32 EvaluateAiMediumMoves(PlayerType[,] state)
         {
+            if (state.GetLength(0) != 3)
+            {
+                throw new ArgumentOutOfRangeException(nameof(state));
+            }
+
+            if (state.GetLength(1) != 3)
+            {
+                throw new ArgumentOutOfRangeException(nameof(state));
+            }
+
+            //TODO: KEIN PLAYER CHECK !!!! SONST AI KAPUTT!!!!
+
             for (Int32 row = 0; row < 3; row++)
             {
                 if (state[row, 0] == state[row, 1] &&
@@ -273,11 +283,11 @@ namespace TicTacToeMatch.Internals
 
             this.FunctionCalls++;
 
-            if (this.EvaluateAiHardMode(newBoard, PlayerType.X))
+            if (this.EvaluateAiHardMode(newBoard) && ticTacToeMatrix.CurrentTurn == PlayerType.X)
             {
                 return -10;
             }
-            else if (this.EvaluateAiHardMode(newBoard, PlayerType.O))
+            else if (this.EvaluateAiHardMode(newBoard) && ticTacToeMatrix.CurrentTurn == PlayerType.O)
             {
                 return 10;
             }
@@ -373,12 +383,12 @@ namespace TicTacToeMatch.Internals
             return this.BestPointMove;
         }
 
-        public Boolean EvaluateAiHardMode(PlayerType[,] state, PlayerType player)
+        public Boolean EvaluateAiHardMode(PlayerType[,] state)
         {
             for (Int32 row = 0; row < 3; row++)
             {
                 if (state[row, 0] == state[row, 1] &&
-                    state[row, 1] == state[row, 2] && state[row, 0] == player)
+                    state[row, 1] == state[row, 2] && state[row, 0] != PlayerType.Unassigned)
                 {
                     return true;
                 }
@@ -387,18 +397,18 @@ namespace TicTacToeMatch.Internals
             for (Int32 col = 0; col < 3; col++)
             {
                 if (state[0, col] == state[1, col] &&
-                    state[1, col] == state[2, col] && state[0, col] == player)
+                    state[1, col] == state[2, col] && state[0, col] != PlayerType.Unassigned)
                 {
                     return true;
                 }
             }
 
-            if (state[0, 0] == state[1, 1] && state[1, 1] == state[2, 2] && state[0, 0] == player)
+            if (state[0, 0] == state[1, 1] && state[1, 1] == state[2, 2] && state[0, 0] != PlayerType.Unassigned)
             {
                 return true;
             }
 
-            if (state[0, 2] == state[1, 1] && state[1, 1] == state[2, 0] && state[0, 2] == player)
+            if (state[0, 2] == state[1, 1] && state[1, 1] == state[2, 0] && state[0, 2] != PlayerType.Unassigned)
             {
                 return true;
             }

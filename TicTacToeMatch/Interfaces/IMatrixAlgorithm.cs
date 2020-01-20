@@ -14,6 +14,7 @@ namespace TicTacToeMatch.Interfaces
         Int32 BoardSize { get; set; }
 
         PlayerType CurrentTurn { get; set; }
+
         PlayerType[,] Board { get; set; }
 
         Boolean WinnerState { get; set; }

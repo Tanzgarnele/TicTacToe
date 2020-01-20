@@ -40,6 +40,6 @@ namespace TicTacToeMatch.Interfaces
 
         PointIndex GetAiHardPointIndex(IMatrixAlgorithm ticTacToeMatrix);
 
-        Boolean EvaluateAiHardMode(PlayerType[,] state, PlayerType player);
+        Boolean EvaluateAiHardMode(PlayerType[,] state);
     }
 }

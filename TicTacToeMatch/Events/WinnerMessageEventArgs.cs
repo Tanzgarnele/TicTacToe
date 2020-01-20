@@ -14,7 +14,7 @@ namespace TicTacToeMatch.Events
 
             if (String.IsNullOrWhiteSpace(winner))
             {
-                throw new ArgumentOutOfRangeException(nameof(winner), "winnwe must be used");
+                throw new ArgumentOutOfRangeException(nameof(winner), "winner must be used");
             }
 
             this.Message = message;
